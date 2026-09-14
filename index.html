@@ -84,28 +84,41 @@
     .btn:active, .card:hover { transform:none; }
   }
   .cta small { color:var(--muted); font-size:.83rem; width:100%; }
-  /* The device plays its own list rather than sitting still. Three bands: the
-     chrome stays put, the listing scrolls behind it, the island stays put —
-     which is what the app actually does, and is why this reads as the app
-     working rather than as a moving picture of it. */
+  /* The device plays its own list. The list scrolls the FULL height of the
+     screen and the bars sit over it, translucent, exactly as iOS does — the
+     first attempt pasted opaque crops on top, so content vanished behind a
+     solid block instead of passing under a blurred bar, and the cut where
+     the window ended left a hard edge at the bottom. */
   .hero__device { position:relative; width:100%; aspect-ratio:620 / 1347;
                   border-radius:12.5% / 5.75%; overflow:hidden; background:#000;
-                  box-shadow:0 24px 70px rgba(0,0,0,.28); }
-  .hero__device img { display:block; width:100%; height:auto; }
-  .hero__band { position:absolute; left:0; right:0; z-index:2; }
-  .hero__band--top { top:0; }
-  .hero__band--bottom { bottom:0; }
-  .hero__window { position:absolute; left:0; right:0; top:10.47%; bottom:10.76%;
-                  overflow:hidden; z-index:1; }
-  .hero__window img { position:absolute; top:0; left:0; width:100%;
-                      animation:drift 52s linear infinite; }
-  @keyframes drift { from { transform:translateY(0); } to { transform:translateY(-50%); } }
-  /* Motion is ambient, never load-bearing: with it off the list simply rests
-     at the top and the page says exactly the same thing. */
-  @media (prefers-reduced-motion:reduce) {
-    .hero__window img { animation:none; }
-  }
+                  box-shadow:0 24px 70px rgba(0,0,0,.28); isolation:isolate; }
+  .hero__window { position:absolute; inset:0; overflow:hidden; z-index:1; }
+  /* Starts just below the nav bar, as the list does, and is three listings
+     tall so translating one listing's worth never runs the bottom dry. */
+  .hero__window img { position:absolute; top:10.47%; left:0; width:100%; display:block;
+                      animation:drift 26s linear infinite; }
+  @keyframes drift { from { transform:translateY(0); } to { transform:translateY(-33.3333%); } }
 
+  /* The bars: a real blur of whatever is behind, a slight scrim so the glyphs
+     hold, and the keyed chrome on top. */
+  .hero__band { position:absolute; left:0; right:0; z-index:2;
+                backdrop-filter:blur(18px) saturate(140%);
+                -webkit-backdrop-filter:blur(18px) saturate(140%); }
+  .hero__band--top { top:0; background:linear-gradient(to bottom,
+                     rgba(10,10,10,.82) 60%, rgba(10,10,10,.55) 100%); }
+  /* The island floats, so only IT is blurred — the rest of the strip is a
+     plain window onto the scrolling list. */
+  .hero__band--bottom { bottom:0; background:none; backdrop-filter:none;
+                        -webkit-backdrop-filter:none; }
+  .hero__band img { display:block; width:100%; height:auto; }
+
+  /* The list fades as it approaches the bottom edge, so a half-drawn row is
+     never simply chopped off — the residue the hard cut used to leave. */
+  .hero__device::after { content:""; position:absolute; inset:auto 0 0 0; height:16%;
+                         background:linear-gradient(to top, #000 8%, transparent);
+                         z-index:1; pointer-events:none; }
+
+  @media (prefers-reduced-motion:reduce) { .hero__window img { animation:none; } }
   /* Alternating feature rows: one claim, one detail. */
   .feature { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
              gap:36px; align-items:center; padding-block:78px 0; }
@@ -196,7 +209,7 @@
         <div class="hero__window">
           <picture>
             <source srcset="/img/hero-strip.webp" type="image/webp">
-            <img src="/img/hero-strip.png" alt="" width="620" height="2123">
+            <img src="/img/hero-strip.png" alt="" width="620" height="3185">
           </picture>
         </div>
         <picture class="hero__band hero__band--top">
