@@ -106,17 +106,12 @@
                 -webkit-backdrop-filter:blur(18px) saturate(140%); }
   .hero__band--top { top:0; background:linear-gradient(to bottom,
                      rgba(10,10,10,.82) 60%, rgba(10,10,10,.55) 100%); }
-  /* The island floats, so only IT is blurred — the rest of the strip is a
-     plain window onto the scrolling list. */
-  .hero__band--bottom { bottom:0; background:none; backdrop-filter:none;
-                        -webkit-backdrop-filter:none; }
+  /* Opaque, and deliberately so — see the note in make-demo images. Its
+     surround is the app's near-black ground on a black device, so it reads as
+     the screen ending rather than as a band laid over it. */
+  .hero__band--bottom { bottom:0; backdrop-filter:none; -webkit-backdrop-filter:none; }
   .hero__band img { display:block; width:100%; height:auto; }
 
-  /* The list fades as it approaches the bottom edge, so a half-drawn row is
-     never simply chopped off — the residue the hard cut used to leave. */
-  .hero__device::after { content:""; position:absolute; inset:auto 0 0 0; height:16%;
-                         background:linear-gradient(to top, #000 8%, transparent);
-                         z-index:1; pointer-events:none; }
 
   @media (prefers-reduced-motion:reduce) { .hero__window img { animation:none; } }
   /* Alternating feature rows: one claim, one detail. */
@@ -168,7 +163,7 @@
   @media (max-width:720px) {
     .hero { grid-template-columns:1fr; gap:28px; padding-block:12px 4px; }
     .hero__copy, .hero h1, .hero p.lede, .feature__copy { max-width:none; }
-    .hero__device { max-width:320px; margin-inline:auto; }
+    .hero__device { max-width:min(300px, 34vh); margin-inline:auto; }
     .feature { padding-block:56px 0; gap:26px; }
     .feature.flip .feature__copy { order:0; }
     .creed p { font-size:clamp(1.5rem,7vw,2rem); }
@@ -218,7 +213,7 @@
         </picture>
         <picture class="hero__band hero__band--bottom">
           <source srcset="/img/hero-bottom.webp" type="image/webp">
-          <img src="/img/hero-bottom.png" alt="" width="620" height="145">
+          <img src="/img/hero-bottom.png" alt="" width="620" height="173">
         </picture>
       </div>
     </section>
