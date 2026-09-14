@@ -37,8 +37,21 @@
   h3 { margin:0; font-size:1rem; font-weight:600; }
   p { margin:0; }
   a { color:var(--ink); text-underline-offset:3px; text-decoration-thickness:1px; }
+  /* Sticky, so navigation survives a long page — with a blur rather than a
+     solid fill so the content reads as passing underneath it. */
+  .headerbar { position:sticky; top:0; z-index:20;
+               background:color-mix(in srgb, var(--paper) 82%, transparent);
+               backdrop-filter:saturate(180%) blur(14px);
+               -webkit-backdrop-filter:saturate(180%) blur(14px);
+               border-bottom:1px solid transparent; transition:border-color .2s ease; }
+  .headerbar.is-scrolled { border-bottom-color:var(--edge); }
   header.site { display:flex; align-items:center; justify-content:space-between;
-                gap:16px; padding-block:22px; flex-wrap:wrap; }
+                gap:16px; padding-block:14px; flex-wrap:wrap; }
+  nav.site a[aria-current="true"] { color:var(--ink); }
+  .skip { position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--ink-invert);
+          padding:10px 16px; border-radius:0 0 8px 0; z-index:50; text-decoration:none; }
+  .skip:focus { left:0; }
+  section[id], div[id] { scroll-margin-top:84px; }
   .brand { display:flex; align-items:center; gap:11px; font-weight:600; font-size:1.02rem;
            text-decoration:none; color:var(--ink); }
   .brand img { width:30px; height:30px; border-radius:7px; display:block; }
@@ -61,10 +74,37 @@
          color:var(--ink-invert); font-weight:600; padding:12px 24px; border-radius:999px;
          font-size:.96rem; }
   .btn.ghost { background:transparent; color:var(--ink); border:1px solid var(--edge); }
+  .btn { transition:transform .12s ease, opacity .15s ease; }
+  .btn:hover { opacity:.88; }
+  .btn:active { transform:translateY(1px); }
+  .card { transition:border-color .18s ease, transform .18s ease; }
+  .card:hover { border-color:color-mix(in srgb, var(--ink) 26%, var(--edge)); transform:translateY(-2px); }
+  @media (prefers-reduced-motion:reduce) {
+    .btn, .card { transition:none; }
+    .btn:active, .card:hover { transform:none; }
+  }
   .cta small { color:var(--muted); font-size:.83rem; width:100%; }
-  .hero__device { position:relative; }
-  .hero__device img { width:100%; max-width:100%; height:auto; display:block;
-                      border-radius:12.5% / 5.75%; box-shadow:0 24px 70px rgba(0,0,0,.28); }
+  /* The device plays its own list rather than sitting still. Three bands: the
+     chrome stays put, the listing scrolls behind it, the island stays put —
+     which is what the app actually does, and is why this reads as the app
+     working rather than as a moving picture of it. */
+  .hero__device { position:relative; width:100%; aspect-ratio:620 / 1347;
+                  border-radius:12.5% / 5.75%; overflow:hidden; background:#000;
+                  box-shadow:0 24px 70px rgba(0,0,0,.28); }
+  .hero__device img { display:block; width:100%; height:auto; }
+  .hero__band { position:absolute; left:0; right:0; z-index:2; }
+  .hero__band--top { top:0; }
+  .hero__band--bottom { bottom:0; }
+  .hero__window { position:absolute; left:0; right:0; top:10.47%; bottom:10.76%;
+                  overflow:hidden; z-index:1; }
+  .hero__window img { position:absolute; top:0; left:0; width:100%;
+                      animation:drift 52s linear infinite; }
+  @keyframes drift { from { transform:translateY(0); } to { transform:translateY(-50%); } }
+  /* Motion is ambient, never load-bearing: with it off the list simply rests
+     at the top and the page says exactly the same thing. */
+  @media (prefers-reduced-motion:reduce) {
+    .hero__window img { animation:none; }
+  }
 
   /* Alternating feature rows: one claim, one detail. */
   .feature { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -124,7 +164,9 @@
 </style>
 </head>
 <body>
-<div class="wrap">
+<a class="skip" href="#main">Skip to content</a>
+<div class="headerbar">
+  <div class="wrap">
   <header class="site">
     <a class="brand" href="/"><img src="/img/icon-64.png" alt="" width="30" height="30"> Notesage</a>
     <nav class="site">
@@ -134,7 +176,11 @@
       <a href="/privacy/">Privacy</a>
     </nav>
   </header>
-  <main>
+  </div>
+</div>
+
+<div class="wrap">
+  <main id="main">
     <section class="hero" id="iphone">
       <div class="hero__copy">
         <h1>Read it later. Or listen.</h1>
@@ -145,9 +191,22 @@
           <small>TestFlight now · App Store soon</small>
         </div>
       </div>
-      <div class="hero__device">
-        <img src="/img/shot-inbox.png" width="620" height="1347"
-             alt="The Notesage reading list on iPhone, showing saved articles with covers and reading progress">
+      <div class="hero__device" role="img"
+           aria-label="The Notesage reading list on iPhone, scrolling through saved articles with covers and reading progress">
+        <div class="hero__window">
+          <picture>
+            <source srcset="/img/hero-strip.webp" type="image/webp">
+            <img src="/img/hero-strip.png" alt="" width="620" height="2123">
+          </picture>
+        </div>
+        <picture class="hero__band hero__band--top">
+          <source srcset="/img/hero-top.webp" type="image/webp">
+          <img src="/img/hero-top.png" alt="" width="620" height="141">
+        </picture>
+        <picture class="hero__band hero__band--bottom">
+          <source srcset="/img/hero-bottom.webp" type="image/webp">
+          <img src="/img/hero-bottom.png" alt="" width="620" height="145">
+        </picture>
       </div>
     </section>
 
@@ -156,8 +215,7 @@
         <h2>It remembers where you stopped</h2>
         <p>Every saved article shows how far you got and roughly how long is left. Come back a week later and the list tells you, instead of asking.</p>
       </div>
-      <figure><img src="/img/detail-progress.png" width="760" height="179" loading="lazy"
-                   alt="An article row showing three of four minutes left, with a progress bar"></figure>
+      <figure><picture><source srcset="/img/detail-progress.webp" type="image/webp"><img src="/img/detail-progress.png" width="760" height="179" loading="lazy" decoding="async" alt="An article row showing three of four minutes left, with a progress bar"></picture></figure>
     </section>
 
     <section class="feature flip">
@@ -165,8 +223,7 @@
         <h2>Or hear it instead</h2>
         <p>Tap the headphones on any row. Articles and notes both, read aloud from where you left off — and your place is the same whether you read it or heard it.</p>
       </div>
-      <figure><img src="/img/detail-listen.png" width="760" height="155" loading="lazy"
-                   alt="An article row playing, its control showing a pause ring"></figure>
+      <figure><picture><source srcset="/img/detail-listen.webp" type="image/webp"><img src="/img/detail-listen.png" width="760" height="155" loading="lazy" decoding="async" alt="An article row playing, its control showing a pause ring"></picture></figure>
     </section>
 
     <section class="feature">
@@ -174,8 +231,7 @@
         <h2>Covers, not filenames</h2>
         <p>Switch to the gallery and your reading pile becomes something you can recognise at a glance — by the picture you half-remember rather than the words you don't.</p>
       </div>
-      <figure><img src="/img/detail-gallery.png" width="760" height="526" loading="lazy"
-                   alt="Saved articles shown as a grid of covers"></figure>
+      <figure><picture><source srcset="/img/detail-gallery.webp" type="image/webp"><img src="/img/detail-gallery.png" width="760" height="526" loading="lazy" decoding="async" alt="Saved articles shown as a grid of covers"></picture></figure>
     </section>
 
     <section class="creed">
@@ -240,5 +296,30 @@
     <span><a href="/privacy/">Privacy</a> · <a href="https://github.com/PeterBlenessy/notesage">GitHub</a></span>
   </footer>
 </div>
+<script>
+  // Two small things, both progressive: the header grows a rule once the page
+  // has moved, and the nav marks the section you are actually in. Neither is
+  // required for the page to work, so neither runs before it does.
+  (function () {
+    var bar = document.querySelector('.headerbar');
+    var onScroll = function () { bar.classList.toggle('is-scrolled', window.scrollY > 8); };
+    onScroll();
+    addEventListener('scroll', onScroll, { passive: true });
+
+    var links = [].slice.call(document.querySelectorAll('nav.site a[href^="/#"]'));
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(2)] = a; });
+    var targets = Object.keys(byId).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    if (!('IntersectionObserver' in window) || !targets.length) return;
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.removeAttribute('aria-current'); });
+        byId[e.target.id].setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    targets.forEach(function (t) { seen.observe(t); });
+  })();
+</script>
 </body>
 </html>
