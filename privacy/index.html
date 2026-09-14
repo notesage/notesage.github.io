@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — Notesage</title>
+<meta name="description" content="Notesage collects nothing. No account, no analytics, no crash reporting, no server operated by us.">
+<meta property="og:title" content="Privacy Policy — Notesage">
+<meta property="og:description" content="Notesage collects nothing. No account, no analytics, no crash reporting, no server operated by us.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://notesage.io/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --ground:#F3F2EE; --surface:#FFFFFF; --edge:#DFDDD5;
+    --text:#1A1C19; --muted:#5B6058; --accent:#2C6B4E; --accent-ink:#FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground:#121411; --surface:#1A1D19; --edge:#2C312B;
+            --text:#E9EBE6; --muted:#9DA69A; --accent:#7FC29B; --accent-ink:#10231A; }
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--text);
+         font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+         line-height:1.65; padding-inline:22px; }
+  .wrap { max-width:900px; margin-inline:auto; }
+  .prose { max-width:66ch; }
+  h1 { font-family:"Newsreader",Georgia,serif; font-weight:600; letter-spacing:-.01em;
+       font-size:clamp(2.4rem,6vw,3.6rem); line-height:1.06; margin:0; text-wrap:balance; }
+  h2 { font-family:"Newsreader",Georgia,serif; font-weight:600;
+       font-size:clamp(1.35rem,3vw,1.7rem); line-height:1.2; margin:0; text-wrap:balance; }
+  p { margin:0; }
+  a { color:var(--accent); text-underline-offset:3px; }
+  code { font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.9em;
+         background:color-mix(in srgb, var(--accent) 12%, transparent);
+         padding:.1em .35em; border-radius:4px; }
+  header.site { display:flex; align-items:center; justify-content:space-between;
+                gap:16px; padding-block:26px; flex-wrap:wrap; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:600;
+           font-size:1.05rem; text-decoration:none; color:var(--text); }
+  .brand span.mark { width:26px; height:26px; border-radius:7px; background:var(--accent);
+                     color:var(--accent-ink); display:grid; place-items:center;
+                     font-family:"Newsreader",Georgia,serif; font-size:1rem; }
+  nav.site a { margin-left:18px; font-size:.94rem; color:var(--muted); text-decoration:none; }
+  nav.site a:hover { color:var(--text); }
+  footer.site { border-top:1px solid var(--edge); margin-top:72px; padding-block:28px 56px;
+                display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+                color:var(--muted); font-size:.88rem; }
+  footer.site a { color:var(--muted); }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
+  main.doc { padding-block:30px 0; display:flex; flex-direction:column; gap:18px; max-width:66ch; }
+  main.doc h2 { padding-top:18px; }
+  main.doc ul { margin:0; padding-left:1.15rem; display:flex; flex-direction:column; gap:7px; }
+  main.doc li { color:var(--muted); }
+  main.doc p { color:var(--muted); }
+  main.doc p strong, main.doc li strong { color:var(--text); }
+  .updated { font-size:.86rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <a class="brand" href="/"><span class="mark">N</span> Notesage</a>
+    <nav class="site">
+      <a href="/#what">What it is</a>
+      <a href="/#get">Get it</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/PeterBlenessy/notesage">Source</a>
+    </nav>
+  </header>
+  <main class="doc">
+    <h1>Privacy Policy</h1>
+<p><strong>Last updated:</strong> 13 August 2026</p>
+<h2>The short version</h2>
+<p>Notesage does not collect your data. There is no account, no analytics, no crash reporting, and no server operated by us. Your notes stay in the folder you choose, on your device and in your own iCloud.</p>
+<h2>What Notesage stores, and where</h2>
+<p>Notesage reads and writes files **only inside the folder you explicitly grant** it access to — typically your Notesage folder in iCloud Drive, or a folder under On My iPhone. iOS enforces this: the app cannot see anything outside that grant. Kept on your device:</p>
+<ul>
+<li>The grant itself, as a security-scoped bookmark.</li>
+<li>Your recently-read list and your view, sort and grouping preferences.</li>
+</ul>
+<p>Kept inside your own library folder, alongside your notes:</p>
+<ul>
+<li>Your notes, folders, and anything you capture with the share sheet.</li>
+<li>Your pinned items (<code>.notesage/pins.json</code>), so they match the desktop app.</li>
+</ul>
+<p>None of this is transmitted to us. We have no way to read any of it.</p>
+<h2>Network requests</h2>
+<p>Notesage connects to the internet only when you ask it to do something that needs the network:</p>
+<ul>
+<li><strong>Saving a shared link.</strong> Notesage fetches that page from its own website to</li>
+</ul>
+<p>  build the note. For a video link, it calls the video provider&#x27;s public   oEmbed endpoint (for example YouTube&#x27;s) to get the title, author, and   thumbnail.</p>
+<ul>
+<li><strong>Showing images a note points to.</strong> These load from wherever the note</li>
+</ul>
+<p>  references them, as in any markdown reader.</p>
+<ul>
+<li><strong>iCloud.</strong> Syncing between your own devices is handled by Apple, under</li>
+</ul>
+<p>  Apple&#x27;s privacy policy. These requests go to the site in question, not to us. They carry no identifier we assign and no information about you beyond what any web request contains.</p>
+<h2>What Notesage does not do</h2>
+<ul>
+<li>No accounts, sign-in, or profiles.</li>
+<li>No analytics or usage tracking.</li>
+<li>No crash reporting from the iOS app.</li>
+<li>No advertising, and no tracking across other apps or websites.</li>
+<li>No sale or sharing of personal information — there is none to sell.</li>
+</ul>
+<h2>Children</h2>
+<p>Notesage is a note-taking tool with no social features, user-generated content feeds, or communication between users. It collects nothing from anyone, children included.</p>
+<h2>Deleting your data</h2>
+<p>Your data is your files. Delete them as you would any files, in Notesage, in the Files app, or on your Mac. Removing the app&#x27;s access (Change library folder) or deleting the app removes the grant and the local preferences; your notes stay where they are, because they were always yours.</p>
+<h2>Changes</h2>
+<p>If this policy changes, the updated version will be published at the same URL with a new &quot;last updated&quot; date.</p>
+<h2>Contact</h2>
+<p>ADDABLE AB — peter.blenessy@addable.se</p>
+  </main>
+  <footer class="site">
+    <span>Notesage — notes that stay yours.</span>
+    <span><a href="/privacy/">Privacy</a> · <a href="https://github.com/PeterBlenessy/notesage">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
