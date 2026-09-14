@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Notesage — notes that stay yours</title>
-<meta name="description" content="A markdown editor for the Mac and a reader for your phone. Plain files in a folder you choose. No account, no analytics, no server.">
-<meta property="og:title" content="Notesage — notes that stay yours">
-<meta property="og:description" content="A markdown editor for the Mac and a reader for your phone. Plain files in a folder you choose. No account, no analytics, no server.">
+<title>Notesage — read it later, or listen</title>
+<meta name="description" content="Send an article to Notesage and it becomes a file in your own folder. Read it on the train, hear it on a walk, open it in ten years.">
+<meta property="og:title" content="Notesage — read it later, or listen">
+<meta property="og:description" content="Send an article to Notesage and it becomes a file in your own folder. Read it on the train, hear it on a walk, open it in ten years.">
 <meta property="og:image" content="https://notesage.io/img/icon-512.png">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#141312">
@@ -17,67 +17,92 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
   :root {
-    --paper:#F6F5F2; --surface:#FFFFFF; --edge:#E3E1DB;
+    --paper:#F6F5F2; --surface:#FFFFFF; --edge:#E3E1DB; --band:#EFEDE8;
     --ink:#171614; --muted:#6B6862; --ink-invert:#F6F5F2;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --paper:#141312; --surface:#1C1B19; --edge:#2D2B27;
+    :root { --paper:#141312; --surface:#1C1B19; --edge:#2D2B27; --band:#1A1917;
             --ink:#EDEAE4; --muted:#9A968E; --ink-invert:#141312; }
   }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body { margin:0; background:var(--paper); color:var(--ink);
          font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
-         line-height:1.65; padding-inline:22px; -webkit-font-smoothing:antialiased; }
-  .wrap { max-width:940px; margin-inline:auto; }
-  h1 { font-family:"Newsreader",Georgia,serif; font-weight:600; letter-spacing:-.015em;
-       font-size:clamp(2.5rem,6.5vw,3.9rem); line-height:1.04; margin:0; text-wrap:balance; }
-  h2 { font-family:"Newsreader",Georgia,serif; font-weight:600;
-       font-size:clamp(1.4rem,3vw,1.8rem); line-height:1.2; margin:0; text-wrap:balance; }
+         line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  .wrap { max-width:1080px; margin-inline:auto; padding-inline:22px; }
+  h1 { font-family:"Newsreader",Georgia,serif; font-weight:600; letter-spacing:-.018em;
+       font-size:clamp(2.6rem,7vw,4.4rem); line-height:1.02; margin:0; text-wrap:balance; }
+  h2 { font-family:"Newsreader",Georgia,serif; font-weight:600; letter-spacing:-.01em;
+       font-size:clamp(1.75rem,4vw,2.5rem); line-height:1.12; margin:0; text-wrap:balance; }
+  h3 { margin:0; font-size:1rem; font-weight:600; }
   p { margin:0; }
   a { color:var(--ink); text-underline-offset:3px; text-decoration-thickness:1px; }
-  a:hover { text-decoration-color:var(--muted); }
-  code { font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.9em;
-         background:color-mix(in srgb, var(--ink) 8%, transparent);
-         padding:.1em .35em; border-radius:4px; }
   header.site { display:flex; align-items:center; justify-content:space-between;
-                gap:16px; padding-block:24px; flex-wrap:wrap; }
-  .brand { display:flex; align-items:center; gap:11px; font-weight:600;
-           font-size:1.02rem; text-decoration:none; color:var(--ink); }
+                gap:16px; padding-block:22px; flex-wrap:wrap; }
+  .brand { display:flex; align-items:center; gap:11px; font-weight:600; font-size:1.02rem;
+           text-decoration:none; color:var(--ink); }
   .brand img { width:30px; height:30px; border-radius:7px; display:block; }
   nav.site a { margin-left:20px; font-size:.93rem; color:var(--muted); text-decoration:none; }
   nav.site a:hover { color:var(--ink); }
-  footer.site { border-top:1px solid var(--edge); margin-top:80px; padding-block:26px 54px;
+  footer.site { border-top:1px solid var(--edge); margin-top:96px; padding-block:26px 54px;
                 display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
                 color:var(--muted); font-size:.87rem; }
   footer.site a { color:var(--muted); }
   :focus-visible { outline:2px solid var(--ink); outline-offset:3px; border-radius:3px; }
-  .hero { padding-block:34px 6px; display:flex; flex-direction:column; gap:22px; max-width:58ch; }
-  .hero p.lede { font-size:1.18rem; color:var(--muted); }
-  .cta { display:flex; gap:12px; flex-wrap:wrap; align-items:center; padding-top:6px; }
-  .btn { display:inline-flex; align-items:center; text-decoration:none;
-         background:var(--ink); color:var(--ink-invert); font-weight:600;
-         padding:11px 22px; border-radius:999px; font-size:.96rem; }
+
+  /* Hero: one device, large, running off the right edge. */
+  .hero { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,420px);
+          gap:40px; align-items:center; padding-block:28px 20px; }
+  .hero__copy { display:flex; flex-direction:column; gap:22px; max-width:22ch; }
+  .hero h1 { max-width:14ch; }
+  .hero p.lede { font-size:1.16rem; color:var(--muted); max-width:34ch; }
+  .cta { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+  .btn { display:inline-flex; align-items:center; text-decoration:none; background:var(--ink);
+         color:var(--ink-invert); font-weight:600; padding:12px 24px; border-radius:999px;
+         font-size:.96rem; }
   .btn.ghost { background:transparent; color:var(--ink); border:1px solid var(--edge); }
-  .cta small { color:var(--muted); font-size:.84rem; }
-  .shots { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-           padding-block:56px 0; }
-  .shots figure { margin:0; display:flex; flex-direction:column; gap:12px; }
-  .shots img { width:100%; max-width:100%; height:auto; display:block;
-               border-radius:12.5% / 5.75%; box-shadow:0 8px 34px rgba(0,0,0,.20); }
-  .shots figcaption { font-size:.89rem; color:var(--muted); text-align:center; }
-  section { padding-block:56px 0; display:flex; flex-direction:column; gap:18px; }
-  .points { display:grid; gap:28px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-            padding-top:6px; }
-  .point { display:flex; flex-direction:column; gap:7px; }
-  .point h3 { margin:0; font-size:1rem; font-weight:600; }
-  .point p { color:var(--muted); font-size:.95rem; }
+  .cta small { color:var(--muted); font-size:.83rem; width:100%; }
+  .hero__device { position:relative; }
+  .hero__device img { width:100%; max-width:100%; height:auto; display:block;
+                      border-radius:12.5% / 5.75%; box-shadow:0 24px 70px rgba(0,0,0,.28); }
+
+  /* Alternating feature rows: one claim, one detail. */
+  .feature { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+             gap:36px; align-items:center; padding-block:78px 0; }
+  .feature__copy { display:flex; flex-direction:column; gap:14px; max-width:38ch; }
+  .feature__copy p { color:var(--muted); }
+  .feature figure { margin:0; }
+  .feature img { width:100%; max-width:100%; height:auto; display:block; border-radius:14px;
+                 box-shadow:0 10px 34px rgba(0,0,0,.16); }
+  .feature.flip .feature__copy { order:2; }
+
+  /* A band with no picture at all — the rhythm break. */
+  .band { background:var(--band); margin-top:88px; padding-block:64px; }
+  .band .inner { display:flex; flex-direction:column; gap:18px; max-width:54ch; }
+  .band p { color:var(--muted); }
+  .tree { font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.85rem;
+          color:var(--muted); line-height:1.85; background:var(--surface);
+          border:1px solid var(--edge); border-radius:12px; padding:18px 20px;
+          overflow-x:auto; margin-top:6px; }
+  .tree b { color:var(--ink); font-weight:500; }
+
+  .more { padding-block:78px 0; display:flex; flex-direction:column; gap:26px; }
+  .more__grid { display:grid; gap:26px 32px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+  .more__grid div { display:flex; flex-direction:column; gap:6px; }
+  .more__grid p { color:var(--muted); font-size:.93rem; }
+
+  .get { padding-block:78px 0; display:flex; flex-direction:column; gap:22px; }
   .platforms { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); }
   .card { background:var(--surface); border:1px solid var(--edge); border-radius:14px;
           padding:22px; display:flex; flex-direction:column; gap:9px; }
-  .card h3 { margin:0; font-size:1.04rem; }
   .card p { color:var(--muted); font-size:.93rem; }
-  .card .meta { font-size:.81rem; }
+  .card .meta { font-size:.88rem; }
+
+  @media (max-width:720px) {
+    .hero { grid-template-columns:1fr; gap:28px; }
+    .hero__device { max-width:300px; }
+    .feature.flip .feature__copy { order:0; }
+  }
 </style>
 </head>
 <body>
@@ -85,81 +110,109 @@
   <header class="site">
     <a class="brand" href="/"><img src="/img/icon-64.png" alt="" width="30" height="30"> Notesage</a>
     <nav class="site">
-      <a href="/#what">What it is</a>
+      <a href="/#iphone">iPhone</a>
+      <a href="/#files">Your files</a>
       <a href="/#get">Get it</a>
       <a href="/privacy/">Privacy</a>
-      <a href="https://github.com/PeterBlenessy/notesage">Source</a>
     </nav>
   </header>
   <main>
-    <div class="hero">
-      <h1>Notes that stay yours.</h1>
-      <p class="lede">A markdown editor for the Mac and a reader for your phone. Your notes are plain files in a folder you choose — not rows in someone's database.</p>
-      <div class="cta">
-        <a class="btn" href="https://github.com/PeterBlenessy/notesage/releases/latest">Download for Mac</a>
-        <a class="btn ghost" href="#get">iPhone</a>
-        <small>Apple silicon · free · open source</small>
+    <section class="hero" id="iphone">
+      <div class="hero__copy">
+        <h1>Read it later. Or listen.</h1>
+        <p class="lede">Send an article to Notesage and it becomes a file in your own folder — one you can read on the train, hear on a walk, and still open in ten years.</p>
+        <div class="cta">
+          <a class="btn" href="mailto:peter.blenessy@addable.se?subject=Notesage%20TestFlight">Try it on iPhone</a>
+          <a class="btn ghost" href="#get">Mac app</a>
+          <small>TestFlight now · App Store soon</small>
+        </div>
       </div>
-    </div>
-
-    <div class="shots">
-      <figure>
-        <img src="/img/shot-inbox.png" alt="The Notesage inbox on iPhone, showing saved articles with reading progress" loading="lazy" width="620" height="1347">
-        <figcaption>Know where you left off</figcaption>
-      </figure>
-      <figure>
-        <img src="/img/shot-gallery.png" alt="Saved articles shown as a grid of covers" loading="lazy" width="620" height="1347">
-        <figcaption>See what you saved</figcaption>
-      </figure>
-      <figure>
-        <img src="/img/shot-reader.png" alt="An article open in the Notesage reader" loading="lazy" width="620" height="1347">
-        <figcaption>Then read it properly</figcaption>
-      </figure>
-    </div>
-
-    <section id="what">
-      <h2>What it is</h2>
-      <div class="points">
-        <div class="point">
-          <h3>Plain files, in your folder</h3>
-          <p>Markdown on disk, in a folder you pick — iCloud Drive or anywhere else. Readable without Notesage, and still readable in ten years.</p>
-        </div>
-        <div class="point">
-          <h3>A reading pile that keeps track</h3>
-          <p>Share an article to Notesage and it is saved as a file. The app remembers how far you read, and can read it aloud.</p>
-        </div>
-        <div class="point">
-          <h3>Nothing phones home</h3>
-          <p>No account, no analytics, no server of ours. The app talks to the network when you ask it to fetch something, and not otherwise.</p>
-        </div>
-        <div class="point">
-          <h3>The same library everywhere</h3>
-          <p>The Mac app and the iPhone app read the same folder. Pins, reading progress and folder colours travel as files beside your notes.</p>
-        </div>
+      <div class="hero__device">
+        <img src="/img/shot-inbox.png" width="620" height="1347"
+             alt="The Notesage reading list on iPhone, showing saved articles with covers and reading progress">
       </div>
     </section>
 
-    <section id="get">
-      <h2>Get it</h2>
-      <div class="platforms">
-        <div class="card">
-          <h3>Mac</h3>
-          <p>A signed build for Apple silicon. The app updates itself.</p>
-          <p class="meta"><a href="https://github.com/PeterBlenessy/notesage/releases/latest">Download the .dmg →</a></p>
-        </div>
-        <div class="card">
-          <h3>iPhone</h3>
-          <p>In TestFlight now, heading for the App Store. Read, write, save articles, listen to them.</p>
-          <p class="meta"><a href="mailto:peter.blenessy@addable.se?subject=Notesage%20TestFlight">Request access →</a></p>
-        </div>
-        <div class="card">
-          <h3>Source</h3>
-          <p>Notesage is open source. Issues and pull requests welcome.</p>
-          <p class="meta"><a href="https://github.com/PeterBlenessy/notesage">View on GitHub →</a></p>
-        </div>
+    <section class="feature">
+      <div class="feature__copy">
+        <h2>It remembers where you stopped</h2>
+        <p>Every saved article shows how far you got and roughly how long is left. Come back a week later and the list tells you, instead of asking.</p>
       </div>
+      <figure><img src="/img/detail-progress.png" width="760" height="179" loading="lazy"
+                   alt="An article row showing three of four minutes left, with a progress bar"></figure>
+    </section>
+
+    <section class="feature flip">
+      <div class="feature__copy">
+        <h2>Or hear it instead</h2>
+        <p>Tap the headphones on any row. Articles and notes both, read aloud from where you left off — and your place is the same whether you read it or heard it.</p>
+      </div>
+      <figure><img src="/img/detail-listen.png" width="760" height="155" loading="lazy"
+                   alt="An article row playing, its control showing a pause ring"></figure>
+    </section>
+
+    <section class="feature">
+      <div class="feature__copy">
+        <h2>Covers, not filenames</h2>
+        <p>Switch to the gallery and your reading pile becomes something you can recognise at a glance — by the picture you half-remember rather than the words you don't.</p>
+      </div>
+      <figure><img src="/img/detail-gallery.png" width="760" height="526" loading="lazy"
+                   alt="Saved articles shown as a grid of covers"></figure>
     </section>
   </main>
+</div>
+
+<div class="band" id="files">
+  <div class="wrap">
+    <div class="inner">
+      <h2>Underneath, it is just your folder</h2>
+      <p>No database, no account, no export button — because there is nothing to export from. Notes are markdown files, articles are HTML files, and everything the app remembers sits beside them in plain text.</p>
+      <div class="tree">
+        Notesage/<br>
+        ├── <b>Essays/</b><br>
+        ├── <b>Inbox/</b> — saved articles<br>
+        │&nbsp;&nbsp;&nbsp;└── .notesage/reading-progress.json<br>
+        ├── <b>Weekly review.md</b><br>
+        └── .notesage/pins.json
+      </div>
+      <p>Point the Mac app and the iPhone app at the same folder and they agree — pins, reading progress, folder colours and all.</p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="more">
+    <h2>And the rest of it</h2>
+    <div class="more__grid">
+      <div><h3>Works on a plane</h3><p>Saved articles are on your device. No signal needed to read them.</p></div>
+      <div><h3>Share sheet capture</h3><p>Send a page from Safari and it arrives as a readable file, images and all.</p></div>
+      <div><h3>Folders you recognise</h3><p>Give a folder an icon and colour on the Mac; the phone shows the same one.</p></div>
+      <div><h3>Voice notes</h3><p>Record straight into your library, kept beside everything else.</p></div>
+      <div><h3>Search that reads</h3><p>Titles, sites and opening lines — not just filenames.</p></div>
+      <div><h3>No account</h3><p>Nothing to sign up for, and nothing of yours on a server of ours.</p></div>
+    </div>
+  </section>
+
+  <section class="get" id="get">
+    <h2>Get it</h2>
+    <div class="platforms">
+      <div class="card">
+        <h3>iPhone</h3>
+        <p>In TestFlight now, heading for the App Store.</p>
+        <p class="meta"><a href="mailto:peter.blenessy@addable.se?subject=Notesage%20TestFlight">Request an invite →</a></p>
+      </div>
+      <div class="card">
+        <h3>Mac</h3>
+        <p>A signed build for Apple silicon that updates itself.</p>
+        <p class="meta"><a href="https://github.com/PeterBlenessy/notesage/releases/latest">Download the .dmg →</a></p>
+      </div>
+      <div class="card">
+        <h3>Source</h3>
+        <p>Open source. Issues and pull requests welcome.</p>
+        <p class="meta"><a href="https://github.com/PeterBlenessy/notesage">View on GitHub →</a></p>
+      </div>
+    </div>
+  </section>
   <footer class="site">
     <span>Notesage — notes that stay yours.</span>
     <span><a href="/privacy/">Privacy</a> · <a href="https://github.com/PeterBlenessy/notesage">GitHub</a></span>
