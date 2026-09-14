@@ -107,7 +107,14 @@
      before it could draw an edge. Nothing to see the end of.
      The glyphs stay legible because the rows behind them are near-black. */
   .hero__band { position:absolute; left:0; right:0; z-index:2; }
-  .hero__band--top { top:0; }
+  /* The list's nav bar travels with the list. */
+  .hero__band--top { top:5.93%; animation:pushAside 26s ease-in-out infinite; }
+  /* The status bar is the SYSTEM's: it never moves and nothing covers it,
+     so it sits above the pushed document too. */
+  .hero__status { position:absolute; top:0; left:0; right:0; z-index:6; }
+  .hero__status img { display:block; width:100%; height:auto; }
+  /* Over the document as well, or the clock vanishes while you read. */
+  .hero__scrim--global { z-index:5; height:14%; }
   .hero__scrim { position:absolute; top:0; left:0; right:0; height:30%; z-index:1;
                  pointer-events:none;
                  background:linear-gradient(to bottom,
@@ -123,12 +130,36 @@
                          z-index:3; pointer-events:none; }
   /* The document. It arrives over the list, is read, and leaves — one loop,
      so the device shows the whole gesture rather than a single state. */
+  /* A PUSH, not a cover. UIKit moves both screens: the outgoing one travels
+     about a third of the way left and dims while the incoming one comes in
+     over it, with a shadow down its leading edge. A layer sliding over a
+     stationary list is the CLOSING animation run backwards, which is what
+     this was. */
   .hero__reader { position:absolute; inset:0; z-index:4; overflow:hidden;
                   background:#000; transform:translateX(102%);
+                  box-shadow:-14px 0 28px rgba(0,0,0,.55);
                   animation:openDoc 26s ease-in-out infinite; }
+  /* The list travels with it, and dims as it goes under. */
+  .hero__window { animation:pushAside 26s ease-in-out infinite; }
+  .hero__dim { position:absolute; inset:0; z-index:3; background:#000; opacity:0;
+               pointer-events:none; animation:dimBehind 26s ease-in-out infinite; }
+  @keyframes pushAside {
+    0%, 44%   { transform:translateX(0); }
+    52%, 90%  { transform:translateX(-30%); }
+    97%, 100% { transform:translateX(0); }
+  }
+  @keyframes dimBehind {
+    0%, 44%   { opacity:0; }
+    52%, 90%  { opacity:.42; }
+    97%, 100% { opacity:0; }
+  }
   .hero__reader .body { position:absolute; top:10.47%; left:0; width:100%; height:auto;
                         display:block; animation:readDoc 26s ease-in-out infinite; }
-  .hero__reader .bar { position:absolute; top:0; left:0; right:0; z-index:2; }
+  /* Below the status bar, which stays put — see reader-top's crop. */
+  /* 170px of a 2868px screen — both in the SOURCE's own pixels. Dividing
+     by the SCALED height instead put the bar a third of the way down the
+     article, on top of its headline. */
+  .hero__reader .bar { position:absolute; top:5.93%; left:0; right:0; z-index:2; }
   .hero__reader .bar img { display:block; width:100%; height:auto; }
 
   /* Still for the first half — the list is the subject then — in from the
@@ -144,8 +175,9 @@
   }
 
   @media (prefers-reduced-motion:reduce) {
-    .hero__window img, .hero__reader, .hero__reader .body { animation:none; }
-    .hero__reader { display:none; }
+    .hero__window, .hero__window img, .hero__reader,
+    .hero__reader .body, .hero__dim { animation:none; }
+    .hero__reader, .hero__dim { display:none; }
   }
   /* Alternating feature rows: one claim, one detail. */
   .feature { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -240,6 +272,7 @@
             <img src="/img/hero-strip.png" alt="" width="620" height="2604">
           </picture>
         </div>
+        <div class="hero__dim" aria-hidden="true"></div>
         <div class="hero__reader" aria-hidden="true">
           <picture>
             <source srcset="/img/reader-body.webp" type="image/webp">
@@ -247,14 +280,19 @@
           </picture>
           <div class="hero__scrim"></div>
           <picture class="bar">
-            <source srcset="/img/reader-top.webp" type="image/webp">
-            <img src="/img/reader-top.png" alt="" width="620" height="141">
+            <source srcset="/img/reader-navbar.webp" type="image/webp">
+            <img src="/img/reader-navbar.png" alt="" width="620" height="61">
           </picture>
         </div>
         <div class="hero__scrim"></div>
         <picture class="hero__band hero__band--top">
-          <source srcset="/img/hero-top.webp" type="image/webp">
-          <img src="/img/hero-top.png" alt="" width="620" height="141">
+          <source srcset="/img/list-navbar.webp" type="image/webp">
+          <img src="/img/list-navbar.png" alt="" width="620" height="61">
+        </picture>
+        <div class="hero__scrim hero__scrim--global"></div>
+        <picture class="hero__status">
+          <source srcset="/img/status-bar.webp" type="image/webp">
+          <img src="/img/status-bar.png" alt="" width="620" height="80">
         </picture>
 </div>
     </section>
