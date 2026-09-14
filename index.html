@@ -97,7 +97,7 @@
   /* Starts just below the nav bar, as the list does, and is three listings
      tall so translating one listing's worth never runs the bottom dry. */
   .hero__window img { position:absolute; top:10.47%; left:0; width:100%; height:auto;
-                      display:block; animation:drift 26s linear infinite; }
+                      display:block; animation:drift 5s linear infinite; }
   @keyframes drift { from { transform:translateY(0); } to { transform:translateY(-33.3333%); } }
 
   /* NO glass. A backdrop-filter has a boundary, and a boundary is an edge —
@@ -177,9 +177,12 @@
     90%     { transform:translateX(0); animation-timing-function:cubic-bezier(.32,.72,0,1); }
     91.35%, 100% { transform:translateX(102%); }
   }
+  /* A flick, not a crawl: it leaves quickly and coasts to a stop, which is
+     what a thumb actually does to a page. */
   @keyframes readDoc {
-    0%, 48%   { transform:translateY(0); }
-    87%, 100% { transform:translateY(-19%); }
+    0%      { transform:translateY(0); }
+    49%     { transform:translateY(0); animation-timing-function:cubic-bezier(.17,.84,.44,1); }
+    55%, 100% { transform:translateY(-19%); }
   }
 
   @media (prefers-reduced-motion:reduce) {
