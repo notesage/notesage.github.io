@@ -7,63 +7,62 @@
 <meta name="description" content="Notesage collects nothing. No account, no analytics, no crash reporting, no server operated by us.">
 <meta property="og:title" content="Privacy Policy — Notesage">
 <meta property="og:description" content="Notesage collects nothing. No account, no analytics, no crash reporting, no server operated by us.">
+<meta property="og:image" content="https://notesage.io/img/icon-512.png">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://notesage.io/">
+<meta name="theme-color" content="#141312">
+<link rel="icon" href="/img/icon-64.png" sizes="64x64">
+<link rel="apple-touch-icon" href="/img/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
   :root {
-    --ground:#F3F2EE; --surface:#FFFFFF; --edge:#DFDDD5;
-    --text:#1A1C19; --muted:#5B6058; --accent:#2C6B4E; --accent-ink:#FFFFFF;
+    --paper:#F6F5F2; --surface:#FFFFFF; --edge:#E3E1DB;
+    --ink:#171614; --muted:#6B6862; --ink-invert:#F6F5F2;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --ground:#121411; --surface:#1A1D19; --edge:#2C312B;
-            --text:#E9EBE6; --muted:#9DA69A; --accent:#7FC29B; --accent-ink:#10231A; }
+    :root { --paper:#141312; --surface:#1C1B19; --edge:#2D2B27;
+            --ink:#EDEAE4; --muted:#9A968E; --ink-invert:#141312; }
   }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
-  body { margin:0; background:var(--ground); color:var(--text);
+  body { margin:0; background:var(--paper); color:var(--ink);
          font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
-         line-height:1.65; padding-inline:22px; }
-  .wrap { max-width:900px; margin-inline:auto; }
-  .prose { max-width:66ch; }
-  h1 { font-family:"Newsreader",Georgia,serif; font-weight:600; letter-spacing:-.01em;
-       font-size:clamp(2.4rem,6vw,3.6rem); line-height:1.06; margin:0; text-wrap:balance; }
+         line-height:1.65; padding-inline:22px; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:940px; margin-inline:auto; }
+  h1 { font-family:"Newsreader",Georgia,serif; font-weight:600; letter-spacing:-.015em;
+       font-size:clamp(2.5rem,6.5vw,3.9rem); line-height:1.04; margin:0; text-wrap:balance; }
   h2 { font-family:"Newsreader",Georgia,serif; font-weight:600;
-       font-size:clamp(1.35rem,3vw,1.7rem); line-height:1.2; margin:0; text-wrap:balance; }
+       font-size:clamp(1.4rem,3vw,1.8rem); line-height:1.2; margin:0; text-wrap:balance; }
   p { margin:0; }
-  a { color:var(--accent); text-underline-offset:3px; }
+  a { color:var(--ink); text-underline-offset:3px; text-decoration-thickness:1px; }
+  a:hover { text-decoration-color:var(--muted); }
   code { font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.9em;
-         background:color-mix(in srgb, var(--accent) 12%, transparent);
+         background:color-mix(in srgb, var(--ink) 8%, transparent);
          padding:.1em .35em; border-radius:4px; }
   header.site { display:flex; align-items:center; justify-content:space-between;
-                gap:16px; padding-block:26px; flex-wrap:wrap; }
-  .brand { display:flex; align-items:center; gap:10px; font-weight:600;
-           font-size:1.05rem; text-decoration:none; color:var(--text); }
-  .brand span.mark { width:26px; height:26px; border-radius:7px; background:var(--accent);
-                     color:var(--accent-ink); display:grid; place-items:center;
-                     font-family:"Newsreader",Georgia,serif; font-size:1rem; }
-  nav.site a { margin-left:18px; font-size:.94rem; color:var(--muted); text-decoration:none; }
-  nav.site a:hover { color:var(--text); }
-  footer.site { border-top:1px solid var(--edge); margin-top:72px; padding-block:28px 56px;
+                gap:16px; padding-block:24px; flex-wrap:wrap; }
+  .brand { display:flex; align-items:center; gap:11px; font-weight:600;
+           font-size:1.02rem; text-decoration:none; color:var(--ink); }
+  .brand img { width:30px; height:30px; border-radius:7px; display:block; }
+  nav.site a { margin-left:20px; font-size:.93rem; color:var(--muted); text-decoration:none; }
+  nav.site a:hover { color:var(--ink); }
+  footer.site { border-top:1px solid var(--edge); margin-top:80px; padding-block:26px 54px;
                 display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
-                color:var(--muted); font-size:.88rem; }
+                color:var(--muted); font-size:.87rem; }
   footer.site a { color:var(--muted); }
-  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
-  main.doc { padding-block:30px 0; display:flex; flex-direction:column; gap:18px; max-width:66ch; }
+  :focus-visible { outline:2px solid var(--ink); outline-offset:3px; border-radius:3px; }
+  main.doc { padding-block:28px 0; display:flex; flex-direction:column; gap:17px; max-width:66ch; }
   main.doc h2 { padding-top:18px; }
   main.doc ul { margin:0; padding-left:1.15rem; display:flex; flex-direction:column; gap:7px; }
-  main.doc li { color:var(--muted); }
-  main.doc p { color:var(--muted); }
-  main.doc p strong, main.doc li strong { color:var(--text); }
-  .updated { font-size:.86rem; color:var(--muted); }
+  main.doc li, main.doc p { color:var(--muted); }
+  main.doc p strong, main.doc li strong { color:var(--ink); }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="site">
-    <a class="brand" href="/"><span class="mark">N</span> Notesage</a>
+    <a class="brand" href="/"><img src="/img/icon-64.png" alt="" width="30" height="30"> Notesage</a>
     <nav class="site">
       <a href="/#what">What it is</a>
       <a href="/#get">Get it</a>
