@@ -84,156 +84,170 @@
     .btn:active, .card:hover { transform:none; }
   }
   .cta small { color:var(--muted); font-size:.83rem; width:100%; }
-  /* The device plays its own list. The list scrolls the FULL height of the
-     screen and the bars sit over it, translucent, exactly as iOS does — the
-     first attempt pasted opaque crops on top, so content vanished behind a
-     solid block instead of passing under a blurred bar, and the cut where
-     the window ended left a hard edge at the bottom. */
-  .hero__device { --dw:min(300px, 68vh / 2.173);
+  /* ── The hero loop ────────────────────────────────────────────────────
+     Specified in HERO.md, which is the thing to change first and the list
+     of assertions to check after. Sixteen seconds, one article — "What a
+     library is for" — from the pile, through the reader, to being read
+     aloud. Every frame is a real screenshot captured in ONE session against
+     ONE library, because the previous version composited a list and a
+     gallery from different runs and the mismatch is what made it feel,
+     correctly, like nothing caused anything. */
+  /* A container, so the drawn chrome is sized from the device's ACTUAL width
+     rather than from --dw. The two can disagree: the narrow breakpoint caps
+     max-width without touching --dw, and the grid column can be narrower than
+     either. cqw is the width, whatever it turned out to be. */
+  .hero__device { --dw:min(300px, 68vh / 2.173); --loop:16s;
+                  container-type:inline-size;
                   position:relative; width:100%; max-width:var(--dw);
-                  aspect-ratio:620 / 1347; margin-inline:auto;
+                  aspect-ratio:440 / 956; margin-inline:auto;
                   border-radius:12.5% / 5.75%; overflow:hidden; background:#000;
                   box-shadow:0 24px 70px rgba(0,0,0,.28); isolation:isolate; }
-  .hero__window { position:absolute; inset:0; overflow:hidden; z-index:1; }
-  /* Starts just below the nav bar, as the list does, and is three listings
-     tall so translating one listing's worth never runs the bottom dry. */
-  .hero__window img { position:absolute; top:10.47%; left:0; width:100%; height:auto;
-                      display:block; animation:drift 5s linear infinite; }
-  @keyframes drift { from { transform:translateY(0); } to { transform:translateY(-33.3333%); } }
+  .hero__device img { display:block; width:100%; height:auto; }
 
-  /* NO glass. A backdrop-filter has a boundary, and a boundary is an edge —
-     masking it fades the tint but the blur still stops somewhere, which is
-     the line that kept showing. So there is no filter here at all: just a
-     long, soft gradient that starts dark at the very top and is gone well
-     before it could draw an edge. Nothing to see the end of.
-     The glyphs stay legible because the rows behind them are near-black. */
-  /* The other two views, as layers that cross-fade. Each is cropped below
-     the status bar, which the page draws once, globally. */
-  .hero__screen { position:absolute; top:5.93%; left:0; right:0; z-index:4;
-                  opacity:0; pointer-events:none; }
-  .hero__screen img { display:block; width:100%; height:auto; }
-  .hero__screen--gallery { animation:showGallery 26s linear infinite; }
-  .hero__screen--menu { z-index:6; animation:showMenu 26s linear infinite; }
+  /* Screen 1: the Inbox. The whole screen travels on a push, so its nav bar
+     and its scrim live inside it; only the strip scrolls. */
+  .hero__list { position:absolute; inset:0; z-index:1;
+                animation:pushAside var(--loop) linear infinite; }
+  .hero__list .strip { position:absolute; top:10.46%; left:0;
+                       animation:listScroll var(--loop) linear infinite; }
+  /* Only the row changes when playback starts, so only the row is overlaid —
+     a second copy of the whole screen would be 82KB to say one thing, and
+     could drift from the list behind it. This IS that row, photographed
+     speaking. */
+  .hero__list .playing { position:absolute; top:51.05%; left:0; opacity:0;
+                         animation:showPlaying var(--loop) linear infinite; }
+  .hero__nav { position:absolute; top:6.485%; left:0; right:0; z-index:3; }
 
-  /* The search island and the add button. DRAWN, not cropped: every crop of
-     them carries whatever row happened to be behind it, which is what put a
-     frozen row and a doubled label in the earlier versions. */
-  .hero__chrome { position:absolute; left:0; right:0; bottom:3.4%; z-index:5;
-                  display:flex; align-items:center; justify-content:center;
-                  gap:0; pointer-events:none; animation:showChrome 26s linear infinite; }
-  .hero__island { display:inline-flex; align-items:center; gap:.42em;
-                  font-size:calc(var(--dw) * .038); color:#EDEDED;
-                  background:rgba(62,62,66,.94); border-radius:999px;
-                  padding:.52em 1.1em; backdrop-filter:blur(8px);
-                  -webkit-backdrop-filter:blur(8px); }
-  .hero__plus { position:absolute; right:5%; width:calc(var(--dw) * .118);
-                height:calc(var(--dw) * .118); border-radius:50%;
-                background:rgba(62,62,66,.94); color:#EDEDED;
-                display:grid; place-items:center;
-                backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
-  .hero__island svg, .hero__plus svg { display:block; }
+  /* Screen 2: the article. */
+  .hero__reader { position:absolute; inset:0; z-index:5; overflow:hidden;
+                  background:#000; transform:translateX(102%);
+                  box-shadow:-14px 0 28px rgba(0,0,0,.55);
+                  animation:openDoc var(--loop) linear infinite; }
+  .hero__reader .strip { position:absolute; top:10.46%; left:0;
+                         animation:readScroll var(--loop) linear infinite; }
+  /* UIKit moves BOTH screens: the outgoing one travels a third of the way
+     left and dims under the incoming one. A layer sliding over a stationary
+     list is the CLOSING animation played backwards. */
+  .hero__dim { position:absolute; inset:0; z-index:4; background:#000; opacity:0;
+               pointer-events:none; animation:dimBehind var(--loop) linear infinite; }
 
-  @keyframes showGallery {
-    0%, 26%      { opacity:0; }
-    27%, 89.4%   { opacity:1; }
-    91%, 100%    { opacity:0; }
-  }
-  @keyframes showMenu {
-    0%, 16%      { opacity:0; }
-    17%, 25.5%   { opacity:1; }
-    26.5%, 100%  { opacity:0; }
-  }
-  /* Hidden while the article is up — it has no island. */
-  @keyframes showChrome {
-    0%, 42%      { opacity:1; }
-    43.4%, 89.4% { opacity:0; }
-    91%, 100%    { opacity:1; }
-  }
-
-  .hero__band { position:absolute; left:0; right:0; z-index:3; }
-  /* The list's nav bar travels with the list. */
-  .hero__band--top { top:5.93%; animation:pushAside 26s linear infinite; }
-  /* The status bar is the SYSTEM's: it never moves and nothing covers it,
-     so it sits above the pushed document too. */
-  .hero__status { position:absolute; top:0; left:0; right:0; z-index:10; }
-  .hero__status img { display:block; width:100%; height:auto; }
-  /* Over the document as well, or the clock vanishes while you read. */
-  .hero__scrim--global { z-index:9; height:14%; }
-  .hero__scrim { position:absolute; top:0; left:0; right:0; height:30%; z-index:1;
+  /* NO glass. A backdrop-filter has a boundary and a boundary is an edge —
+     masking it fades the tint but the blur still stops somewhere, and that
+     line kept showing. Just a long, soft gradient that is gone well before
+     it could draw one. */
+  .hero__scrim { position:absolute; top:0; left:0; right:0; height:30%; z-index:2;
                  pointer-events:none;
                  background:linear-gradient(to bottom,
                    rgba(0,0,0,.97) 0%, rgba(0,0,0,.93) 30%, rgba(0,0,0,.80) 44%,
                    rgba(0,0,0,.48) 62%, rgba(0,0,0,.18) 82%, rgba(0,0,0,0) 100%); }
-  .hero__band img { display:block; width:100%; height:auto; }
 
+  /* Floating chrome, DRAWN rather than cropped: any crop of it carries
+     whatever row was behind it, which is what put a frozen row and a doubled
+     search button in the earlier versions. Drawn once per screen, and the
+     two are never on at the same time — the assertion is one search control
+     at any moment. */
+  /* Inside its own screen, so it travels with the push exactly as it does on
+     the phone. Cross-fading two device-fixed chromes instead put BOTH search
+     glyphs on screen at half opacity for the 350ms of the push — the same
+     doubled-search bug as before, just briefer. */
+  .hero__chrome { position:absolute; left:0; right:0; bottom:3.4%; z-index:3;
+                  display:flex; align-items:center; justify-content:center;
+                  pointer-events:none; }
+  .hero__island { display:inline-flex; align-items:center; gap:.42em;
+                  font-size:3.8cqw; color:#EDEDED;
+                  background:rgba(62,62,66,.94); border-radius:999px;
+                  padding:.52em 1.1em; }
+  .hero__round { position:absolute; right:5%; width:11.8cqw;
+                 height:11.8cqw; border-radius:50%;
+                 background:rgba(62,62,66,.94); color:#EDEDED;
+                 display:grid; place-items:center; }
+
+  /* Nothing moves without a cause: each transition is preceded by this. */
+  .hero__tap { position:absolute; z-index:7; width:17cqw;
+               height:17cqw; margin:-8.5cqw;
+               border-radius:50%; background:rgba(255,255,255,.62); opacity:0;
+               pointer-events:none; }
+  .hero__tap--open   { left:50%;    top:56.6%; animation:tapOpen var(--loop) linear infinite; }
+  .hero__tap--back   { left:9.1%;   top:9.2%;  animation:tapBack var(--loop) linear infinite; }
+  .hero__tap--listen { left:93.2%;  top:56.7%; animation:tapListen var(--loop) linear infinite; }
 
   /* The list fades out rather than being cut, which is what the device's own
      bottom edge does to it. */
-  .hero__device::after { content:""; position:absolute; inset:auto 0 0 0; height:14%;
-                         background:linear-gradient(to top, #000 22%, transparent);
-                         z-index:2; pointer-events:none; }
-  /* The document. It arrives over the list, is read, and leaves — one loop,
-     so the device shows the whole gesture rather than a single state. */
-  /* A PUSH, not a cover. UIKit moves both screens: the outgoing one travels
-     about a third of the way left and dims while the incoming one comes in
-     over it, with a shadow down its leading edge. A layer sliding over a
-     stationary list is the CLOSING animation run backwards, which is what
-     this was. */
-  .hero__reader { position:absolute; inset:0; z-index:8; overflow:hidden;
-                  background:#000; transform:translateX(102%);
-                  box-shadow:-14px 0 28px rgba(0,0,0,.55);
-                  animation:openDoc 26s linear infinite; }
-  /* The list travels with it, and dims as it goes under. */
-  .hero__window { z-index:1; animation:pushAside 26s linear infinite; }
-  .hero__dim { position:absolute; inset:0; z-index:7; background:#000; opacity:0;
-               pointer-events:none; animation:dimBehind 26s linear infinite; }
+  /* Each screen fades its own bottom edge, under its own chrome. */
+  .hero__fade { position:absolute; inset:auto 0 0 0; height:14%; z-index:2;
+                background:linear-gradient(to top, #000 22%, transparent);
+                pointer-events:none; }
+  /* The status bar is the SYSTEM's: it never moves, nothing covers it, and it
+     sits above the pushed document too — otherwise the clock slides away. */
+  .hero__scrim--global { z-index:8; height:14%; }
+  .hero__status { position:absolute; top:0; left:0; right:0; z-index:9; }
+
+  /* ── Timeline. Percentages of 16s; see the beat table in HERO.md.
+     The animation is linear so the scroll phases stay even, and each segment
+     declares its own curve ON the keyframe it starts from. ─────────────── */
+  /* Beat 1: 1.60→2.90s, 118pt of 1000 = 11.8%. That distance is not
+     arbitrary: it is where scrollToItem() puts the list back on the way
+     out of the article, so beats 9 and 10 land on it and nothing jumps. */
+  @keyframes listScroll {
+    0%, 10%          { transform:translateY(0); animation-timing-function:cubic-bezier(.17,.84,.44,1); }
+    18.1%, 92.6%     { transform:translateY(-11.8%); animation-timing-function:cubic-bezier(.17,.84,.44,1); }
+    100%             { transform:translateY(0); }
+  }
+  /* Beats 4 and 9 — 350ms, iOS's own curve. */
   @keyframes pushAside {
-    0%      { transform:translateX(0); }
-    42%     { transform:translateX(0); animation-timing-function:cubic-bezier(.32,.72,0,1); }
-    43.35%  { transform:translateX(-30%); }
-    90%     { transform:translateX(-30%); animation-timing-function:cubic-bezier(.32,.72,0,1); }
-    91.35%, 100% { transform:translateX(0); }
+    0%, 25.1%        { transform:translateX(0); animation-timing-function:cubic-bezier(.32,.72,0,1); }
+    27.3%, 53.4%     { transform:translateX(-30%); animation-timing-function:cubic-bezier(.32,.72,0,1); }
+    55.6%, 100%      { transform:translateX(0); }
+  }
+  @keyframes openDoc {
+    0%, 25.1%        { transform:translateX(102%); animation-timing-function:cubic-bezier(.32,.72,0,1); }
+    27.3%, 53.4%     { transform:translateX(0); animation-timing-function:cubic-bezier(.32,.72,0,1); }
+    55.6%, 100%      { transform:translateX(102%); }
   }
   @keyframes dimBehind {
-    0%, 42%      { opacity:0; }
-    43.35%, 90%  { opacity:.42; }
-    91.35%, 100% { opacity:0; }
+    0%, 25.1%        { opacity:0; }
+    27.3%, 53.4%     { opacity:.45; }
+    55.6%, 100%      { opacity:0; }
   }
-  .hero__reader .body { position:absolute; top:10.47%; left:0; width:100%; height:auto;
-                        display:block; animation:readDoc 26s ease-in-out infinite; }
-  /* Below the status bar, which stays put — see reader-top's crop. */
-  /* 170px of a 2868px screen — both in the SOURCE's own pixels. Dividing
-     by the SCALED height instead put the bar a third of the way down the
-     article, on top of its headline. */
-  .hero__reader .bar { position:absolute; top:5.93%; left:0; right:0; z-index:2; }
-  .hero__reader .bar img { display:block; width:100%; height:auto; }
+  /* Beat 6: a flick — leaves fast, coasts to a stop. Resets while the reader
+     is off-screen, so the snap is never seen. */
+  @keyframes readScroll {
+    0%, 35.1%        { transform:translateY(0); animation-timing-function:cubic-bezier(.17,.84,.44,1); }
+    46.4%, 55.6%     { transform:translateY(-43%); }
+    56.2%, 100%      { transform:translateY(0); }
+  }
+  /* Beat 12: headphones become pause, and the ring starts. */
+  @keyframes showPlaying {
+    0%, 62.6%        { opacity:0; }
+    65.1%, 92.6%     { opacity:1; }
+    94%, 100%        { opacity:0; }
+  }
+  @keyframes tapOpen {
+    0%, 24.0%   { opacity:0; transform:scale(.35); }
+    24.35%  { opacity:.52; transform:scale(.9); }
+    25.1%, 100%  { opacity:0; transform:scale(1.45); }
+  }
+  @keyframes tapBack {
+    0%, 52.3%   { opacity:0; transform:scale(.35); }
+    52.65%  { opacity:.52; transform:scale(.9); }
+    53.4%, 100%  { opacity:0; transform:scale(1.45); }
+  }
+  @keyframes tapListen {
+    0%, 61.5%   { opacity:0; transform:scale(.35); }
+    61.85%  { opacity:.52; transform:scale(.9); }
+    62.6%, 100%  { opacity:0; transform:scale(1.45); }
+  }
 
-  /* Still for the first half — the list is the subject then — in from the
-     right, held while it scrolls, and away again. */
-  /* iOS pushes in about 350ms — 1.35% of this loop — on a decelerating
-     curve, not a symmetric ease. The timing function is declared ON the
-     keyframe so it governs the segment that follows it; the animation itself
-     is linear so the scrolling phases stay even. */
-  @keyframes openDoc {
-    0%      { transform:translateX(102%); }
-    42%     { transform:translateX(102%); animation-timing-function:cubic-bezier(.32,.72,0,1); }
-    43.35%  { transform:translateX(0); }
-    90%     { transform:translateX(0); animation-timing-function:cubic-bezier(.32,.72,0,1); }
-    91.35%, 100% { transform:translateX(102%); }
-  }
-  /* A flick, not a crawl: it leaves quickly and coasts to a stop, which is
-     what a thumb actually does to a page. */
-  @keyframes readDoc {
-    0%      { transform:translateY(0); }
-    47%     { transform:translateY(0); animation-timing-function:cubic-bezier(.17,.84,.44,1); }
-    53%, 100% { transform:translateY(-19%); }
-  }
-
+  /* Reduced motion: hold beat 2 — the pile, with the article you are halfway
+     through sitting in the middle of it. The still frame says the same thing
+     the loop does. */
   @media (prefers-reduced-motion:reduce) {
-    .hero__window, .hero__window img, .hero__reader,
-    .hero__reader .body, .hero__dim { animation:none; }
-    .hero__reader, .hero__dim { display:none; }
+    .hero__list, .hero__list .strip, .hero__list .playing, .hero__reader,
+    .hero__reader .strip, .hero__dim, .hero__tap { animation:none; }
+    .hero__list .strip { transform:translateY(-11.8%); }
+    .hero__reader, .hero__dim, .hero__tap, .hero__list .playing { display:none; }
   }
+
   /* Alternating feature rows: one claim, one detail. */
   .feature { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
              gap:36px; align-items:center; padding-block:78px 0; }
@@ -320,48 +334,34 @@
         </div>
       </div>
       <div class="hero__device" role="img"
-           aria-label="An iPhone running Notesage: the reading list scrolls, the view menu opens, the list switches to a gallery of covers, and an article opens and is read">
-        <div class="hero__window">
-          <picture>
-            <source srcset="/img/hero-strip.webp" type="image/webp">
-            <img src="/img/hero-strip.png" alt="" width="620" height="2604">
-          </picture>
+           aria-label="An iPhone running Notesage: a reading list scrolls to an article that is two of five minutes from finished, the article opens and is read, and back in the list the same article starts being read aloud">
+        <div class="hero__list">
+          <img class="strip" src="/img/h2-list.webp" alt="" width="880" height="2000">
+          <img class="playing" src="/img/h2-playing-row.webp" alt="" width="880" height="180">
+          <div class="hero__fade"></div>
+          <div class="hero__chrome hero__chrome--list">
+            <span class="hero__island"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg><span>16 items</span></span>
+            <span class="hero__round"><svg width="44%" height="44%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+          <div class="hero__scrim"></div>
+          <img class="hero__nav" src="/img/h2-nav-list.webp" alt="" width="880" height="112">
         </div>
-        <picture class="hero__screen hero__screen--gallery">
-          <source srcset="/img/gallery.webp" type="image/webp">
-          <img src="/img/gallery.png" alt="" width="620" height="1267">
-        </picture>
-        <div class="hero__chrome" aria-hidden="true">
-          <span class="hero__island"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg><span>16 items</span></span>
-          <span class="hero__plus"><svg width="44%" height="44%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
-        </div>
-        <picture class="hero__screen hero__screen--menu">
-          <source srcset="/img/view-menu.webp" type="image/webp">
-          <img src="/img/view-menu.png" alt="" width="620" height="1267">
-        </picture>
         <div class="hero__dim" aria-hidden="true"></div>
         <div class="hero__reader" aria-hidden="true">
-          <picture>
-            <source srcset="/img/reader-body2.webp" type="image/webp">
-            <img class="body" src="/img/reader-body2.png" alt="" width="620" height="1514">
-          </picture>
+          <img class="strip" src="/img/h2-reader.webp" alt="" width="880" height="3120">
+          <div class="hero__fade"></div>
+          <div class="hero__chrome hero__chrome--reader">
+            <span class="hero__round"><svg width="44%" height="44%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg></span>
+          </div>
           <div class="hero__scrim"></div>
-          <picture class="bar">
-            <source srcset="/img/reader-navbar.webp" type="image/webp">
-            <img src="/img/reader-navbar.png" alt="" width="620" height="61">
-          </picture>
+          <img class="hero__nav" src="/img/h2-nav-reader.webp" alt="" width="880" height="112">
         </div>
-        <div class="hero__scrim"></div>
-        <picture class="hero__band hero__band--top">
-          <source srcset="/img/list-navbar.webp" type="image/webp">
-          <img src="/img/list-navbar.png" alt="" width="620" height="61">
-        </picture>
-        <div class="hero__scrim hero__scrim--global"></div>
-        <picture class="hero__status">
-          <source srcset="/img/status-bar.webp" type="image/webp">
-          <img src="/img/status-bar.png" alt="" width="620" height="80">
-        </picture>
-</div>
+        <span class="hero__tap hero__tap--open" aria-hidden="true"></span>
+        <span class="hero__tap hero__tap--back" aria-hidden="true"></span>
+        <span class="hero__tap hero__tap--listen" aria-hidden="true"></span>
+        <div class="hero__scrim hero__scrim--global" aria-hidden="true"></div>
+        <img class="hero__status" src="/img/h2-status.webp" alt="" width="880" height="124">
+      </div>
     </section>
 
     <section class="feature">
@@ -369,7 +369,7 @@
         <h2>It remembers where you stopped</h2>
         <p>Every saved article shows how far you got and roughly how long is left. Come back a week later and the list tells you, instead of asking.</p>
       </div>
-      <figure><picture><source srcset="/img/detail-progress.webp" type="image/webp"><img src="/img/detail-progress.png" width="760" height="179" loading="lazy" decoding="async" alt="An article row showing three of four minutes left, with a progress bar"></picture></figure>
+      <figure><img src="/img/d2-progress.webp" width="880" height="186" loading="lazy" decoding="async" alt="An article row reading one of two minutes left, with a progress bar under it"></figure>
     </section>
 
     <section class="feature flip">
@@ -377,7 +377,7 @@
         <h2>Or hear it instead</h2>
         <p>Tap the headphones on any row. Articles and notes both, read aloud from where you left off — and your place is the same whether you read it or heard it.</p>
       </div>
-      <figure><picture><source srcset="/img/detail-listen.webp" type="image/webp"><img src="/img/detail-listen.png" width="760" height="155" loading="lazy" decoding="async" alt="An article row playing, its control showing a pause ring"></picture></figure>
+      <figure><img src="/img/d2-listen.webp" width="880" height="186" loading="lazy" decoding="async" alt="An article row being read aloud, its control showing a pause button inside a progress ring"></figure>
     </section>
 
     <section class="feature">
@@ -385,7 +385,7 @@
         <h2>Covers, not filenames</h2>
         <p>Switch to the gallery and your reading pile becomes something you can recognise at a glance — by the picture you half-remember rather than the words you don't.</p>
       </div>
-      <figure><picture><source srcset="/img/detail-gallery.webp" type="image/webp"><img src="/img/detail-gallery.png" width="760" height="526" loading="lazy" decoding="async" alt="Saved articles shown as a grid of covers"></picture></figure>
+      <figure><img src="/img/d2-gallery.webp" width="880" height="687" loading="lazy" decoding="async" alt="Saved articles shown as a grid of their own cover images"></figure>
     </section>
 
     <section class="creed">
