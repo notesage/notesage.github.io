@@ -409,10 +409,25 @@
   /* The line on the app icon. It is the product's whole argument, and it is
      already the first thing anyone sees on their home screen — so the site
      says it too, once, with nothing else on the screen to argue with. */
-  .creed { padding-block:104px 96px; }
+  /* Centred, its line breaks evened out, and framed by two hairlines rather
+     than a change of ground — the "your files" band starts immediately below,
+     and two grounds in a row merge into one slab. The space around it is
+     doing most of the work: it is the only place on the page where nothing
+     competes. */
+  /* 60px below, not 148: the "your files" band carries its own 88px top
+     margin, so 60 + 88 makes the space under the quote match the 148 above
+     it. Padding it symmetrically leaves a 240px void that reads as a gap
+     rather than as room. */
+  .creed { padding-block:148px 60px; display:flex; flex-direction:column;
+           align-items:center; gap:42px; text-align:center; }
+  .creed__rule { width:36px; height:1px; background:var(--edge); flex:none; }
   .creed p { font-family:"Newsreader",Georgia,serif; font-weight:400; font-style:italic;
-             font-size:clamp(1.7rem,3.6vw,2.6rem); line-height:1.3; letter-spacing:-.01em;
-             margin:0; max-width:24ch; text-wrap:balance; }
+             font-size:clamp(1.75rem,4vw,3rem); line-height:1.28; letter-spacing:-.012em;
+             /* 27ch, not 23: at 23 the balancer can only find a four-line
+                break whose lines run 516/507/448/407px — a funnel. Given the
+                room it settles on three lines within 21px of each other,
+                measured rather than guessed. */
+             margin:0; max-width:27ch; text-wrap:balance; }
   .creed p span { color:var(--muted); font-style:normal; }
 
   @media (max-width:720px) {
@@ -421,7 +436,12 @@
     .hero__device { max-width:min(300px, 34vh); margin-inline:auto; }
     .feature { padding-block:56px 0; gap:26px; }
     .feature.flip .feature__copy { order:0; }
-    .creed p { font-size:clamp(1.5rem,7vw,2rem); }
+    .creed { padding-block:92px 8px; gap:32px; }
+    /* 6vw, not 7.4: three lines is the only arrangement of this sentence
+       that balances. At 7.4vw it needs four and they run 338/333/294/266 —
+       the same funnel the desktop had. Measured from 320px up; 6vw keeps it
+       at three the whole way, spread never over 13px. */
+    .creed p { font-size:clamp(1.2rem,6vw,1.9rem); }
     .band { padding-block:48px; }
   }
 </style>
@@ -556,8 +576,10 @@
       </div>
     </section>
 
-<section class="creed">
+    <section class="creed">
+      <span class="creed__rule" aria-hidden="true"></span>
       <p>The hardest part of thinking is not the thinking itself, <span>but holding still long enough for a thought to arrive.</span></p>
+      <span class="creed__rule" aria-hidden="true"></span>
     </section>
   </main>
 </div>
