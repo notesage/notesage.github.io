@@ -324,6 +324,51 @@
     .l3__menu { transform:scale(1); opacity:1; }
   }
 
+  /* ── Loop 4 — find it however you remember it ─────────────────────────
+     Twelve seconds. The pill IS the search control, and the page claimed a
+     search that reads sites without ever showing one. Nothing translates
+     here, so the bars are device-level; the two search frames are real
+     full-screen captures and carry their own field, which is why the drawn
+     pill has to be off while either is up. */
+  .l4 { --loop4:12s; }
+  .l4__list { position:absolute; inset:0; z-index:1; }
+  .l4__list .strip { position:absolute; top:10.46%; left:0; }
+  .l4__screen { position:absolute; top:10.46%; left:0; opacity:0; }
+  .l4__screen--the  { z-index:2; animation:l4The  var(--loop4) linear infinite; }
+  .l4__screen--site { z-index:3; animation:l4Site var(--loop4) linear infinite; }
+  .l4 .hero__chrome { animation:l4Pill var(--loop4) linear infinite; }
+
+  /* The query change is a CUT, not a cross-fade. Typed text does not
+     dissolve, and fading two search fields through each other ghosts the
+     query for 400ms. `the` stays opaque underneath until `themargin` is fully
+     up, then drops out behind it. */
+  @keyframes l4The  { 0%, 15.17% { opacity:0; } 18.75%, 29.5% { opacity:1; }
+                      29.51%, 100% { opacity:0; } }
+  @keyframes l4Site { 0%, 29.17% { opacity:0; } 29.5%, 72.67% { opacity:1; }
+                      76.25%, 100% { opacity:0; } }
+  /* The drawn pill is only ever on when neither real field is. */
+  @keyframes l4Pill { 0%, 15.17% { opacity:1; } 18.75%, 72.67% { opacity:0; }
+                      76.25%, 100% { opacity:1; } }
+  @keyframes l4TapSearch {
+    0%, 13.9%    { opacity:0; transform:scale(.35); }
+    14.3%        { opacity:.52; transform:scale(.9); }
+    15.17%, 100% { opacity:0; transform:scale(1.45); }
+  }
+  @keyframes l4TapClear {
+    0%, 71.4%    { opacity:0; transform:scale(.35); }
+    71.8%        { opacity:.52; transform:scale(.9); }
+    72.67%, 100% { opacity:0; transform:scale(1.45); }
+  }
+  .l4__tap--search { left:50%;   top:90.2%; animation:l4TapSearch var(--loop4) linear infinite; }
+  .l4__tap--clear  { left:75.2%; top:92.8%; animation:l4TapClear  var(--loop4) linear infinite; }
+
+  @media (prefers-reduced-motion:reduce) {
+    .l4__screen, .l4 .hero__chrome, .l4 .hero__tap { animation:none; }
+    /* Hold the beat that carries the claim: five results, five same sites. */
+    .l4__screen--site { opacity:1; }
+    .l4__screen--the, .l4 .hero__tap, .l4 .hero__chrome { display:none; }
+  }
+
   /* Alternating feature rows: one claim, one detail. */
   .feature { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
              gap:36px; align-items:center; padding-block:78px 0; }
@@ -484,7 +529,34 @@
       </div>
     </section>
 
-    <section class="creed">
+        <section class="feature flip">
+      <div class="feature__copy">
+        <h2>Search that reads</h2>
+        <p>Not just filenames. Titles, the site it came from, and the opening line — so "that thing from The Margin" is a search you can actually run.</p>
+        <p>Sixteen items, then nine, then five — and every one of the five came from the same publication.</p>
+      </div>
+      <div class="hero__device l4" role="img"
+           aria-label="An iPhone running Notesage: the Inbox's item count is tapped and becomes a search field; as themargin is typed the sixteen saved articles narrow to nine and then to five, every one of them from themargin.example; clearing the search brings all sixteen back">
+        <div class="l4__list">
+          <img class="strip" src="/img/h2-list.webp" alt="" width="880" height="2000" loading="lazy" decoding="async">
+          <div class="hero__fade"></div>
+        </div>
+        <img class="l4__screen l4__screen--the" src="/img/l4-the.webp" alt="" width="880" height="1712" loading="lazy" decoding="async">
+        <img class="l4__screen l4__screen--site" src="/img/l4-site.webp" alt="" width="880" height="1712" loading="lazy" decoding="async">
+        <div class="hero__chrome hero__chrome--list" aria-hidden="true">
+          <span class="hero__island"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg><span>16 items</span></span>
+          <span class="hero__round"><svg width="44%" height="44%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+        <img class="hero__nav" src="/img/h2-nav-list.webp" alt="" width="880" height="112" loading="lazy" decoding="async">
+        <span class="hero__tap l4__tap--search" aria-hidden="true"></span>
+        <span class="hero__tap l4__tap--clear" aria-hidden="true"></span>
+        <div class="hero__scrim hero__scrim--global" aria-hidden="true"></div>
+        <img class="hero__status" src="/img/h2-status.webp" alt="" width="880" height="124" loading="lazy" decoding="async">
+      </div>
+    </section>
+
+<section class="creed">
       <p>The hardest part of thinking is not the thinking itself, <span>but holding still long enough for a thought to arrive.</span></p>
     </section>
   </main>

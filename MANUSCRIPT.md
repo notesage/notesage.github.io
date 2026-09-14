@@ -6,7 +6,7 @@ nothing else: a loop is one story, and mixing two is what made the first hero
 feel arbitrary.
 
 - **Loop 1 — the hero.** Read it later, or listen. 16s.
-- **Loop 2 — save it from anywhere.** 9s.
+- **Loop 2 — save it from anywhere.** 9s. **PARKED** — see the loop for why.
 - **Loop 3 — arrange it the way you think.** 19s.
 
 ---
@@ -142,6 +142,24 @@ Checkable in the browser against the built page.
 
 # Loop 2 — save it from anywhere
 
+> **PARKED, one step from done.** The flow is proven end to end on the
+> simulator: Safari → share sheet (Notesage is in it) → the extension's own
+> sheet with its Format picker → Save → the article in the Inbox with its own
+> cover. What stops it is that every frame reads **`127.0.0.1`** where it
+> should read `slowweb.example` — in the address bar, in the share sheet, and
+> in the extension's sheet. The article is served from a local HTTP server,
+> and `.example` is reserved by RFC 2606 so it will never resolve on its own.
+>
+> **To resume:** add `127.0.0.1 slowweb.example` to the Mac's `/etc/hosts`
+> (needs sudo — it is the owner's call, not something to do on their behalf),
+> then serve `content/demo-ios/share/` on port 80 or fold the port into the
+> hosts entry's URL, and re-shoot the four frames. Everything else below is
+> already verified against the device.
+>
+> Not an option: redrawing Safari's chrome so the address reads what we want.
+> The page exists to show the real app, and a fabricated browser frame is the
+> one thing on it that would not be true.
+
 **9 seconds.** Under the heading "It starts somewhere else."
 
 The first question a visitor has is not how the app reads; it is how anything
@@ -186,6 +204,26 @@ its own cover.
 - Beat 6 exists. Cutting from the tap straight to the Inbox reads as the app
   being taken over; the half-second of unchanged Safari is what makes it read
   as saving rather than leaving.
+
+## What the capture run established
+
+- `NotesageShare.appex` ships in the simulator build, so the share sheet entry
+  is real.
+- The extension's own sheet is a better beat than the one first specified: it
+  shows a **Format** picker — Article (Markdown) / Link note / Article (HTML)
+  — which is the "it becomes a file you own" claim, made by the app rather
+  than by us.
+- **Use Article (HTML).** Saved as Markdown the row is `A field guide to
+  saving things.md` with a raw-markdown thumbnail — no site, no read time, no
+  cover — and reads as nothing like the rows around it. As HTML it is a proper
+  article row.
+- The Inbox must be sorted **Date modified** for this loop, or the arrival
+  lands near the bottom: "Alphabetical" sorts by FILENAME, and every seeded
+  capture is date-prefixed, so a title beginning with a letter sorts after all
+  of them. Sort order is a setting the page already presents as one in loop 3,
+  so two loops showing two orders is consistent with the message.
+- The arrival is first under ALL NOTES, not first on screen — the pinned item
+  is still above it.
 
 ## Setup this loop needs
 
@@ -298,3 +336,71 @@ the notes are spread over the same weeks, so the grouping produces RECENTLY
 CHANGED / SEPTEMBER / AUGUST and the covers genuinely reorder. Same class of
 problem as the read times: the library was asserting something the files did
 not support.
+
+---
+
+# Loop 4 — find it however you remember it
+
+**12 seconds.** Under the heading "Search that reads."
+
+The page claims search covers "titles, sites and opening lines — not just
+filenames" and shows nothing. It also leaves the `16 items` pill looking like
+a label when it is the search control. One loop fixes both.
+
+Written AFTER the capture run rather than before it, on purpose: three things
+in the earlier manuscripts were specified from imagination and had to be
+corrected against the device. What follows is what the app does.
+
+## The query
+
+**`themargin`** — a publication name, not a word in any title. Sixteen items
+become nine, then five, and every one of the five visibly reads
+`themargin.example`. Nothing about that result is explicable by filenames,
+which is the whole claim, and the viewer can check it without being told.
+
+## Beats
+
+| # | t | dur | what happens | easing |
+|---|---|-----|--------------|--------|
+| 0 | 0.00 | 1.70 | The Inbox at rest, sixteen items, the pill reading `16 items`. | — |
+| 1 | 1.70 | 0.12 | Tap indicator on the pill. | — |
+| 2 | 1.82 | 0.43 | The search field takes the pill's place and the list narrows to nine — `the` is in the field. | `ease` |
+| 3 | 2.25 | 1.25 | Hold. Still a screenful; the query is clearly unfinished. | — |
+| 4 | 3.50 | 0.40 | The query reaches `themargin` and the list narrows to five. | `ease` |
+| 5 | 3.90 | 4.70 | **The long hold.** Five rows, five identical sites. This is the beat that carries the claim, and it needs long enough to read the second line of every row. | — |
+| 6 | 8.60 | 0.12 | Tap indicator on the field's clear control. | — |
+| 7 | 8.72 | 0.43 | The full list returns, the pill with it. | `ease` |
+| 8 | 9.15 | 2.85 | Hold, back where it started. | — |
+
+## Assertions
+
+- Beat 5 holds ≥ 4.5s.
+- Every row in beat 5 shows `themargin.example`; the count goes 16 → 9 → 5 and
+  never back up except at beat 7.
+- The CSS-drawn pill is visible ONLY in beats 0–1 and 8. The search frames
+  carry their own real field, and the pill must not sit under or over it.
+- The query text only ever grows, and only at beats 2 and 4, each immediately
+  after a tap or as a continuation of typing already begun.
+- The nav bar, status bar and scrim are identical in every beat — they are
+  device-level here, because nothing in this loop translates.
+
+## What the capture run established, and two things worth fixing
+
+- **The keyboard cannot be kept in frame.** `idb ui text` dismisses it, and
+  tapping the field again opens a text-selection menu rather than reopening
+  the keyboard. So the loop shows the query growing across real frames instead
+  of depicting keystrokes. Every frame is a real screenshot; nothing is drawn.
+- **A search that matches nothing shows a completely blank screen** — no
+  "nothing matches", no count, just the nav bar and an empty field. Worth a
+  fix in the app; not this loop's problem, but it is why a mistyped query
+  during capture looked like a crash.
+- **A match in an opening line is not visible in the row.** Searching
+  `hoarding` returns "What a library is for" correctly — the word is in its
+  standfirst — but the row truncates that line before reaching it, so the
+  reader sees a result with no visible reason. Matching on a site is the only
+  one of the three claims whose evidence is on screen, which is why the loop
+  uses one. A row that showed the matched span would make the other two
+  demonstrable too.
+- Search is a **persistent filter**: it survives relaunch and applies to Home.
+  Any capture run must clear it before finishing, or the next run opens on
+  "nothing matches" with no row to tap.
