@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Privacy Policy — Notesage</title>
-<meta name="description" content="Notesage collects nothing. No account, no analytics, no crash reporting, no server operated by us.">
+<meta name="description" content="Neither app collects anything. No account, no analytics, no crash reporting, no identifier, and no server operated by us.">
 <meta property="og:title" content="Privacy Policy — Notesage">
-<meta property="og:description" content="Notesage collects nothing. No account, no analytics, no crash reporting, no server operated by us.">
+<meta property="og:description" content="Neither app collects anything. No account, no analytics, no crash reporting, no identifier, and no server operated by us.">
 <meta property="og:image" content="https://notesage.io/img/icon-512.png">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#141312">
@@ -79,24 +79,23 @@
   </header>
   <main class="doc">
     <h1>Privacy Policy</h1>
-<p><strong>Last updated:</strong> 15 September 2026</p>
+<p><strong>Last updated:</strong> 21 September 2026</p>
 
 <p>This policy covers both Notesage apps — the iPhone app and the Mac app. They
 are built from one codebase but they do not behave identically, and where they
 differ this policy says so rather than averaging them.</p>
 
 <h2>The short version</h2>
-<p><strong>The iPhone app collects nothing.</strong> No account, no analytics,
-no crash reporting, no identifier. The analytics and crash-reporting libraries
-are not merely switched off there — they are not compiled into the app at all.</p>
-<p><strong>The Mac app also collects nothing until you turn on a Labs
-feature.</strong> Labs features are experimental, and switching any of them on
-switches on anonymous usage and crash reporting with it — that is how a feature
-earns its way out of Labs. The app tells you this above the toggles, and you can
-turn the reporting back off in Settings → Privacy while keeping the feature.</p>
-<p><strong>Your notes are never part of any of that.</strong> They stay in the
-folder you chose. The one time note content leaves your device is when you use
-an AI feature, and then it goes to the provider you configured — never to us.</p>
+<p><strong>Neither app collects anything.</strong> No account, no analytics, no
+crash reporting, no identifier. The analytics and crash-reporting libraries are
+not merely switched off — they are not compiled into either app at all, and
+there is no setting that could turn them on.</p>
+<p><strong>Your notes stay in the folder you chose.</strong> The one time note
+content leaves your device is when you use an AI feature on the Mac, and then it
+goes to the provider you configured — never to us.</p>
+<p><strong>There is no Notesage server.</strong> Not for your notes, not for
+diagnostics, not for anything. We have nothing to keep, nothing to lose, and
+nothing to hand over.</p>
 
 <h2>What Notesage stores, and where</h2>
 <p>Notesage reads and writes files <strong>only inside the folder you grant it
@@ -123,22 +122,27 @@ that grant.</p>
 <div class="doc__scroll"><table class="grid">
   <thead><tr><th>What</th><th>iPhone</th><th>Mac</th></tr></thead>
   <tbody>
-    <tr><td>Saving a shared link — fetching the page to build the note, and
-            calling a video provider's public oEmbed endpoint for a video
-            link</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Saving a shared link — fetching the page to build the
+            note</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Calling a video provider's public oEmbed endpoint for a video
+            link</td><td>Yes</td><td>No — the Mac has no Video capture
+            format</td></tr>
     <tr><td>Loading images a note points at, from wherever the note references
             them</td><td>Yes</td><td>Yes, off by default for link
             previews</td></tr>
     <tr><td>iCloud sync between your own devices, handled by Apple under
             Apple's privacy policy</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Checking GitHub for a new version, and for release notes, shortly
-            after launch</td><td>No — updates come from the App
+    <tr><td>Checking GitHub for a new version shortly after launch (you can
+            turn this off)</td><td>No — updates come from the App
             Store</td><td>Yes</td></tr>
-    <tr><td>AI features you invoke — see below</td><td>No — the iPhone app has
-            none</td><td>Only when you use them</td></tr>
-    <tr><td>Anonymous usage and crash reporting</td><td><strong>Never — not
-            compiled in</strong></td><td>Only with a Labs feature on, or if you
-            switch it on</td></tr>
+    <tr><td>Fetching release notes from GitHub when you open Settings — this
+            one is not covered by the update-check
+            setting</td><td>No</td><td>Yes</td></tr>
+    <tr><td>AI features — see below. Mostly only when you invoke them, but
+            inline completions send as you type</td><td>No — the iPhone app has
+            none</td><td>Only with a provider configured</td></tr>
+    <tr><td>Usage or crash reporting</td><td><strong>Never — not compiled
+            in</strong></td><td><strong>Never — not compiled in</strong></td></tr>
   </tbody>
 </table></div>
 <p>Requests to fetch a page or an image go to the site in question, not to us.
@@ -146,10 +150,21 @@ They carry no identifier we assign, and nothing about you beyond what any web
 request carries.</p>
 
 <h2>AI features (Mac only)</h2>
-<p>The Mac app can send text to an AI model. This only happens when you invoke
-it — a chat message, an editor action like Improve or Summarize, an agent run —
-and it goes to <strong>the provider you configured</strong>, under that
-provider's privacy policy and terms, using your own API key.</p>
+<p>The Mac app can send text to an AI model. It goes to <strong>the provider
+you configured</strong>, under that provider's privacy policy and terms, using
+your own API key — there is no default provider, so until you set one up none of
+this happens at all.</p>
+<p>Most of it happens only when you ask: a chat message, an editor action like
+Improve or Summarize, an agent run. <strong>Inline completions are the
+exception, and worth knowing about:</strong> if you have configured a connection
+for them, the app sends the text around your cursor about a third of a second
+after you stop typing, without you asking each time. Where that goes depends on
+the connection — a local model (Ollama, or the bundled one) keeps it on your
+machine; an API-key connection sends it to that provider. You can switch inline
+completions off in Settings.</p>
+<p>Scheduled automations are the other case where nobody is present: if you set
+one up with an AI step, it runs on its schedule and calls the provider
+then.</p>
 <p>Depending on what you invoke, that can include the text you selected, the
 document you are working in, and material the assistant is given access to.
 Treat it as you would pasting the same text into that provider's own app.</p>
@@ -160,65 +175,54 @@ bundled local model — in which case nothing leaves the device at all.</p>
 <p><strong>We never receive any of it.</strong> There is no Notesage server in
 this path; the app talks to your provider directly.</p>
 
-<h2>Usage and crash reporting (Mac only)</h2>
-<p>Off by default. It switches on in one of two ways: you enable it in Settings
-→ Privacy, or you turn on any Labs feature, which enables it as part of the
-bargain and says so on the panel. Either can be reversed at any time, and
-turning reporting off does not turn the feature off.</p>
-<p><strong>Usage analytics</strong> record that a thing happened, never what it
-was about. The event list is fixed and closed — there is no free text in it, no
-file names, no paths, no note content, no URLs. A document-opened event carries
-the format (<code>md</code>, <code>pdf</code>); an AI event carries the kind of
-provider (<code>anthropic</code>, <code>ollama</code>), never its name, address
-or your key. Each event is sent with a timestamp, your app version, OS name and
-version, the app engine version, your system locale, and a random session
-identifier that is discarded after four hours of inactivity. There is no
-account, device or install identifier, and nothing that follows you between
-sessions.</p>
-<p><strong>Crash reports</strong> carry the error, where in the code it
-happened, and the app version. Personally identifying data is disabled at the
-SDK level, log breadcrumbs are not collected at all — because our logs contain
-file paths — and every report is scrubbed before it is sent.</p>
-<p>These go to our analytics provider (Aptabase) and our error-reporting
-provider (Sentry), who process them on our behalf. Neither receives your notes,
-your files, or their names.</p>
-
 <h2>What Notesage does not do</h2>
 <ul>
   <li>No accounts, sign-in, or profiles — on either app.</li>
   <li>No advertising, and no tracking across other apps or websites.</li>
   <li>No selling or sharing of personal information.</li>
-  <li>No collection of any kind by the iPhone app.</li>
+  <li>No collection of any kind, by either app.</li>
   <li>No reading of your notes by us, on any platform, ever.</li>
 </ul>
 
 <h2>Children</h2>
 <p>Notesage is a note-taking tool with no social features, no feeds, and no
-communication between users. The iPhone app collects nothing from anyone. The
-Mac app collects nothing unless an adult turns on a Labs feature or enables
-reporting deliberately, and what it then collects is anonymous and carries no
-identity.</p>
+communication between users. Neither app collects anything from anyone, of any
+age.</p>
 
 <h2>Deleting your data</h2>
 <p>Your data is your files. Delete them as you would any files — in Notesage, in
 the Files app, or on your Mac. Removing the app's access (Change library folder)
 or deleting the app removes the grant and the local preferences; your notes stay
 where they are, because they were always yours.</p>
-<p>To stop usage and crash reporting on the Mac, switch it off in Settings →
-Privacy. Reports already sent are anonymous and carry no identifier, so there is
-nothing we could look up to delete on request — and equally nothing that
-identifies you.</p>
+<p>There is nothing on our side to delete, because nothing reaches us.</p>
 
 <h2>Changes</h2>
 <p>If this policy changes, the updated version is published at the same URL with
 a new "last updated" date.</p>
+<p>The substantive change on 21 September 2026: earlier versions of the Mac app
+could send anonymous usage and crash reports, off by default. That was removed
+from the code, and the accounts with both providers were closed.</p>
+
+<h2>Your rights</h2>
+<p>Under the GDPR you have the right to ask us for access to personal data we
+hold about you, to have it corrected or erased, to restrict how we process it,
+to receive it in a portable form, and to object to processing. Where processing
+rests on consent, you can withdraw it at any time.</p>
+<p>In practice these rights have nothing to bite on here, and the reason is
+worth stating plainly rather than dressing up: no personal data reaches us at
+all. We hold nothing about you, so there is nothing to show you, correct, erase,
+restrict, port, or object to. Everything the app stores stays on your device,
+where you can inspect and delete it directly without asking us.</p>
+<p>If you think we have handled your personal data wrongly, you can complain to
+a supervisory authority. In Sweden that is Integritetsskyddsmyndigheten (IMY),
+<a href="https://www.imy.se">imy.se</a>.</p>
 
 <h2>Contact</h2>
 <p>ADDABLE AB — <a href="mailto:peter.blenessy@addable.se">peter.blenessy@addable.se</a></p>
   </main>
   <footer class="site">
     <span>Notesage — notes that stay yours.</span>
-    <span><a href="/privacy/">Privacy</a> · <a href="https://github.com/PeterBlenessy/notesage">GitHub</a></span>
+    <span><a href="/privacy/">Privacy</a> · <a href="/eula/">Licence</a> · <a href="https://github.com/PeterBlenessy/notesage">GitHub</a></span>
   </footer>
 </div>
 </body>
