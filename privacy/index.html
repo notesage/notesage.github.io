@@ -119,35 +119,79 @@ that grant.</p>
 <p>None of this is transmitted to us, and we have no way to read any of it.</p>
 
 <h2>When each app uses the network</h2>
+<p>Everything below goes to the site, provider or service named — not to us.
+There is no Notesage server for any of it. These requests carry no identifier
+we assign, and nothing about you beyond what any web request carries.</p>
 <div class="doc__scroll"><table class="grid">
   <thead><tr><th>What</th><th>iPhone</th><th>Mac</th></tr></thead>
   <tbody>
-    <tr><td>Saving a shared link — fetching the page to build the
-            note</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Calling a video provider's public oEmbed endpoint for a video
-            link</td><td>Yes</td><td>No — the Mac has no Video capture
-            format</td></tr>
+    <tr><td>Saving a shared link — see "Saving a link" below, which is more
+            involved than it looks</td><td>Yes</td><td>Yes</td></tr>
     <tr><td>Loading images a note points at, from wherever the note references
-            them</td><td>Yes</td><td>Yes, off by default for link
-            previews</td></tr>
+            them</td><td>Yes</td><td>Yes</td></tr>
     <tr><td>iCloud sync between your own devices, handled by Apple under
             Apple's privacy policy</td><td>Yes</td><td>Yes</td></tr>
     <tr><td>Checking GitHub for a new version shortly after launch (you can
             turn this off)</td><td>No — updates come from the App
             Store</td><td>Yes</td></tr>
-    <tr><td>Fetching release notes from GitHub when you open Settings — this
-            one is not covered by the update-check
-            setting</td><td>No</td><td>Yes</td></tr>
-    <tr><td>AI features — see below. Mostly only when you invoke them, but
-            inline completions send as you type</td><td>No — the iPhone app has
+    <tr><td>Fetching release notes from GitHub when you open Settings — not
+            covered by the update-check setting</td><td>No</td><td>Yes</td></tr>
+    <tr><td>AI features — see below. Mostly only when you ask, but inline
+            completions send as you type</td><td>No — the iPhone app has
             none</td><td>Only with a provider configured</td></tr>
+    <tr><td>Things you set up yourself — MCP servers, skill scripts, downloaded
+            models, web search. See "Things you switch on"
+            below</td><td>No</td><td>Only what you enable</td></tr>
     <tr><td>Usage or crash reporting</td><td><strong>Never — not compiled
             in</strong></td><td><strong>Never — not compiled in</strong></td></tr>
   </tbody>
 </table></div>
-<p>Requests to fetch a page or an image go to the site in question, not to us.
-They carry no identifier we assign, and nothing about you beyond what any web
-request carries.</p>
+
+<h2>Saving a link</h2>
+<p>This is the part of the app that touches the network most, and the details
+are not obvious from the outside, so here they are.</p>
+<p><strong>On iPhone, the share sheet contacts the site as soon as it
+opens</strong> — before you tap Save, and whether or not you go through with it.
+Two requests: one reads the response headers to work out whether the link is a
+page or a file, so the sheet can offer the right format; the other fetches the
+link preview card you see at the top. If you change your mind and cancel, the
+site has already been contacted.</p>
+<p><strong>Building the note loads the page the way a browser would.</strong>
+Both apps render it in a hidden web view and read the settled page, because many
+sites assemble their content with scripts. That means the page's own scripts
+run, and whatever it loads — fonts, images, third-party trackers and analytics
+belonging to that site — is loaded too, exactly as if you had opened it in
+Safari. Nothing from that reaches us, but it is not a quiet fetch either.</p>
+<p><strong>Links to X (Twitter) additionally call X's public syndication
+endpoint</strong> (<code>cdn.syndication.twimg.com</code>), because the page
+itself does not carry the post's text.</p>
+<p><strong>Video links on iPhone call the video provider's public oEmbed
+endpoint</strong> to build the embed. The Mac has no Video capture format and
+does not make this call.</p>
+
+<h2>Things you switch on</h2>
+<p>Several Mac features reach the network once you set them up. None are on by
+default, and all of them go where you pointed them:</p>
+<ul>
+  <li><strong>MCP servers</strong> you have added and enabled start
+      automatically when the app launches — you do not have to open anything.
+      A server that runs on your machine stays there; one you pointed at a URL
+      connects to it then. Where a server uses OAuth, the app refreshes its
+      token in the background, without asking again.</li>
+  <li><strong>Skill scripts</strong> run with network access. They are wrapped
+      in the operating system's sandbox for file access where that can be set
+      up — but the sandbox does not currently filter the network, and if it
+      cannot be built at all the script runs without it. A skill script is code
+      you chose to install and run; treat it as you would any script.</li>
+  <li><strong>Downloading a local model</strong> fetches it from Hugging Face.
+      Installing the Node-based agent bridge fetches Node from
+      <code>nodejs.org</code> and packages from the npm registry.</li>
+  <li><strong>Web search</strong>, if you enable it, lets the assistant query
+      DuckDuckGo. Once enabled it does not ask again per search.</li>
+</ul>
+<p>The <code>.html</code> viewer does not block a document's external resources
+by default — opening a saved web page loads what that page references. You can
+turn blocking on in Settings.</p>
 
 <h2>AI features (Mac only)</h2>
 <p>The Mac app can send text to an AI model. It goes to <strong>the provider
@@ -178,7 +222,10 @@ this path; the app talks to your provider directly.</p>
 <h2>What Notesage does not do</h2>
 <ul>
   <li>No accounts, sign-in, or profiles — on either app.</li>
-  <li>No advertising, and no tracking across other apps or websites.</li>
+  <li>No advertising, and no tracking of you by us — not across other apps,
+      not across websites. (A page you save runs its own scripts while it is
+      being captured, as described above. That is the site's doing, not ours,
+      and nothing from it reaches us.)</li>
   <li>No selling or sharing of personal information.</li>
   <li>No collection of any kind, by either app.</li>
   <li>No reading of your notes by us, on any platform, ever.</li>
