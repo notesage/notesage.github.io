@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>End User Licence Agreement — Notesage</title>
+<meta name="description" content="The Notesage desktop application is free to use, for any purpose, with no restrictions beyond the law. Source code is MIT-licensed.">
+<meta property="og:title" content="End User Licence Agreement — Notesage">
+<meta property="og:description" content="The Notesage desktop application is free to use, for any purpose, with no restrictions beyond the law. Source code is MIT-licensed.">
+<meta property="og:image" content="https://notesage.io/img/icon-512.png">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#141312">
+<link rel="icon" href="/img/icon-64.png" sizes="64x64">
+<link rel="apple-touch-icon" href="/img/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper:#F6F5F2; --surface:#FFFFFF; --edge:#E3E1DB;
+    --ink:#171614; --muted:#6B6862; --ink-invert:#F6F5F2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#141312; --surface:#1C1B19; --edge:#2D2B27;
+            --ink:#EDEAE4; --muted:#9A968E; --ink-invert:#141312; }
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--paper); color:var(--ink);
+         font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;
+         line-height:1.65; padding-inline:22px; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:940px; margin-inline:auto; }
+  h1 { font-family:"Newsreader",Georgia,serif; font-weight:600; letter-spacing:-.015em;
+       font-size:clamp(2.5rem,6.5vw,3.9rem); line-height:1.04; margin:0; text-wrap:balance; }
+  h2 { font-family:"Newsreader",Georgia,serif; font-weight:600;
+       font-size:clamp(1.4rem,3vw,1.8rem); line-height:1.2; margin:0; text-wrap:balance; }
+  p { margin:0; }
+  a { color:var(--ink); text-underline-offset:3px; text-decoration-thickness:1px; }
+  a:hover { text-decoration-color:var(--muted); }
+  code { font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.9em;
+         background:color-mix(in srgb, var(--ink) 8%, transparent);
+         padding:.1em .35em; border-radius:4px; }
+  header.site { display:flex; align-items:center; justify-content:space-between;
+                gap:16px; padding-block:24px; flex-wrap:wrap; }
+  .brand { display:flex; align-items:center; gap:11px; font-weight:600;
+           font-size:1.02rem; text-decoration:none; color:var(--ink); }
+  .brand img { width:30px; height:30px; border-radius:7px; display:block; }
+  nav.site a { margin-left:20px; font-size:.93rem; color:var(--muted); text-decoration:none; }
+  nav.site a:hover { color:var(--ink); }
+  footer.site { border-top:1px solid var(--edge); margin-top:80px; padding-block:26px 54px;
+                display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+                color:var(--muted); font-size:.87rem; }
+  footer.site a { color:var(--muted); }
+  :focus-visible { outline:2px solid var(--ink); outline-offset:3px; border-radius:3px; }
+  main.doc { padding-block:28px 0; display:flex; flex-direction:column; gap:17px; max-width:66ch; }
+  main.doc h2 { padding-top:18px; }
+  main.doc ul { margin:0; padding-left:1.15rem; display:flex; flex-direction:column; gap:7px; }
+  main.doc li, main.doc p { color:var(--muted); }
+  table.grid { border-collapse:collapse; width:100%; font-size:.93rem; color:var(--muted); }
+  table.grid th, table.grid td { text-align:left; vertical-align:top; padding:9px 12px 9px 0;
+                                 border-bottom:1px solid var(--edge); }
+  table.grid th { color:var(--ink); font-weight:600; white-space:nowrap; }
+  table.grid td:first-child { padding-right:22px; }
+  table.grid tr > :nth-child(n+2) { width:22%; }
+  .doc__scroll { overflow-x:auto; }
+  main.doc p strong, main.doc li strong { color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <a class="brand" href="/"><img src="/img/icon-64.png" alt="" width="30" height="30"> Notesage</a>
+    <nav class="site">
+      <a href="/#what">What it is</a>
+      <a href="/#get">Get it</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/PeterBlenessy/notesage">Source</a>
+    </nav>
+  </header>
+  <main class="doc">
+<h1>End User Licence Agreement</h1>
+<p class="meta"><strong>Last updated:</strong> 21 September 2026</p>
+<p>This agreement covers the <strong>Notesage application for macOS</strong>, downloaded
+from this site or from the project's GitHub releases. Applications installed
+from the App Store are covered by Apple's standard Licensed Application End
+User Licence Agreement instead.</p>
+
+<h2>Why this exists</h2>
+<p>The Notesage <strong>source code</strong> is published under the MIT Licence, which
+grants rights to anyone holding the source. Most people never hold it — they
+download a signed application and run it. This states the terms that copy is
+provided on, so those users have terms at all rather than relying on a licence
+covering something they never received.</p>
+<p>Nothing here reduces any right the MIT Licence gives to anyone with the
+source. The MIT Licence governs the source; this governs the binary.</p>
+
+<h2>What you may do</h2>
+<p>ADDABLE AB grants you a worldwide, royalty-free, non-exclusive, perpetual
+licence to use and copy <strong>the version of the application you have</strong>, for any
+purpose, including commercial use, on any number of devices. No payment,
+registration or account is required for it, now or ever.</p>
+<p>Perpetual means what it says: a version you hold today stays yours to use
+indefinitely, whatever we do later. We cannot revoke it, expire it, or make it
+require a payment after the fact.</p>
+
+<h2>Sharing it with others</h2>
+<p>You may pass the application on to other people, provided you pass it on
+<strong>unmodified and without charge</strong>. You may not sell it, bundle it into
+something you sell, or distribute it for any other consideration.</p>
+<p>If you want to build and distribute your own version, the source code is
+published under the MIT Licence and that licence — not this one — governs what
+you may do with it.</p>
+
+<h2>Future versions, and services</h2>
+<p>This agreement covers the version you have. It is not a promise about
+versions that do not exist yet.</p>
+<p>Later versions may be offered on different terms, including paid ones, and
+nothing here obliges us to release future work free of charge. Separately,
+anything we run as a <strong>service</strong> — synchronisation, hosted storage, or
+support for platforms and storage providers that require infrastructure on our
+side — is not part of this licence at all and may be offered on its own terms.</p>
+<p>Neither changes the paragraph above. A version you already hold does not
+stop working, and does not start costing money, because a later one is
+priced.</p>
+
+<h2>What you may not do</h2>
+<p>Only what the law already prohibits. This agreement adds no restriction on
+reverse engineering, modification, benchmarking, or publishing what you find.</p>
+<p>The one exception: the third-party notices the application displays
+(Settings → System → Licences) may not be removed or obscured. The licences of
+the components Notesage bundles require those notices to travel with every
+copy, so if you redistribute the application they must remain intact.</p>
+
+<h2>What you own</h2>
+<p>Everything you create. Your notes, documents and attachments are yours, in a
+folder you chose, and this agreement gives us no right of any kind over them.</p>
+<p>The application itself and the name "Notesage" remain ours. This licence
+grants use of the application, not ownership of it.</p>
+
+<h2>No warranty</h2>
+<p>The application is provided <strong>as is</strong>, without warranty of any kind,
+express or implied, including any implied warranty of merchantability, fitness
+for a particular purpose, or non-infringement.</p>
+<p>We do not warrant that it will be uninterrupted, error-free, or that it will
+preserve your data. <strong>Keep backups.</strong> The application writes to files you
+nominate; a fault, a failed sync, or a mistaken action can lose work.</p>
+
+<h2>Liability</h2>
+<p>To the fullest extent permitted by law, we are not liable for indirect,
+incidental, special or consequential loss, nor for lost profits, lost data, or
+the cost of replacement software, arising from use of or inability to use the
+application.</p>
+<p>This does not limit liability that cannot be limited by law — including for
+death or personal injury caused by negligence, for fraud, or for gross
+negligence or intentional misconduct. If you are a consumer, your mandatory
+rights under the law of your country of residence are unaffected by anything
+here.</p>
+
+<h2>Privacy</h2>
+<p>What the application processes, and what it transmits, is described in the
+<a href="/privacy/">Privacy Policy</a>, which forms part of the terms the
+application is provided on.</p>
+
+<h2>Term</h2>
+<p>This licence runs for as long as you use the application. We may stop
+distributing or updating it at any time; that does not end your licence to the
+copy you already hold, which remains valid indefinitely.</p>
+
+<h2>Governing law</h2>
+<p>Swedish law applies, excluding its conflict-of-law rules. If you are a
+consumer resident elsewhere in the EU or EEA, this choice does not deprive you
+of the protection of mandatory provisions of the law where you live.</p>
+<p>If any provision is held unenforceable, the rest stays in force.</p>
+
+<h2>Contact</h2>
+<p>ADDABLE AB — <a href="mailto:peter.blenessy@addable.se">peter.blenessy@addable.se</a></p>
+</main>
+  <footer class="site">
+    <span>Notesage — notes that stay yours.</span>
+    <span><a href="/privacy/">Privacy</a> · <a href="/eula/">Licence</a> · <a href="https://github.com/PeterBlenessy/notesage">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
