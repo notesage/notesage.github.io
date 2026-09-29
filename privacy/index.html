@@ -79,7 +79,7 @@
   </header>
   <main class="doc">
     <h1>Privacy Policy</h1>
-<p><strong>Last updated:</strong> 24 September 2026</p>
+<p><strong>Last updated:</strong> 29 September 2026</p>
 
 <p>This policy covers both Notesage apps — the iPhone app and the Mac app. They
 are built from one codebase but they do not behave identically, and where they
@@ -128,20 +128,23 @@ we assign, and nothing about you beyond what any web request carries.</p>
     <tr><td>Saving a shared link — see "Saving a link" below, which is more
             involved than it looks</td><td>Yes</td><td>Yes</td></tr>
     <tr><td>Loading images a note points at, from wherever the note references
-            them</td><td>Yes</td><td>Yes</td></tr>
+            them</td><td>Yes — and in the background for saved articles, see
+            "Saving images for offline" below</td><td>Yes</td></tr>
     <tr><td>iCloud sync between your own devices, handled by Apple under
             Apple's privacy policy</td><td>Yes</td><td>Yes</td></tr>
     <tr><td>Checking GitHub for a new version shortly after launch (you can
             turn this off)</td><td>No — updates come from the App
             Store</td><td>Yes</td></tr>
-    <tr><td>Fetching release notes from GitHub when you open Settings — not
-            covered by the update-check setting</td><td>No</td><td>Yes</td></tr>
+    <tr><td>Fetching release notes from GitHub when you open Settings → System,
+            and when the update check finds a new version — not covered by the
+            update-check setting</td><td>No</td><td>Yes</td></tr>
     <tr><td>AI features — see below. Mostly only when you ask, but inline
-            completions send as you type</td><td>No — the iPhone app has
+            completions send as you type, and the assistant can search the web
+            on its own</td><td>No — the iPhone app has
             none</td><td>Only with a provider configured</td></tr>
-    <tr><td>Things you set up yourself — MCP servers, skill scripts, downloaded
-            models, web search. See "Things you switch on"
-            below</td><td>No</td><td>Only what you enable</td></tr>
+    <tr><td>Things you set up yourself — MCP servers, skill scripts, local
+            models and agents. See "Things you set up"
+            below</td><td>No</td><td>Once set up</td></tr>
     <tr><td>Usage or crash reporting</td><td><strong>Never — not compiled
             in</strong></td><td><strong>Never — not compiled in</strong></td></tr>
   </tbody>
@@ -168,26 +171,50 @@ itself does not carry the post's text.</p>
 <p><strong>Video links on iPhone call the video provider's public oEmbed
 endpoint</strong> to build the embed. The Mac has no Video capture format and
 does not make this call.</p>
+<p><strong>Updating a saved article on iPhone</strong> ("Update from source")
+fetches its original page again, when you ask for it.</p>
+<p><strong>Link preview cards on the Mac</strong> fetch the linked page when you
+create one or accept one while pasting. Cards already in a document do not
+fetch until you allow it, and their remote images are off by default.</p>
 
-<h2>Things you switch on</h2>
-<p>Several Mac features reach the network once you set them up. None are on by
-default, and all of them go where you pointed them:</p>
+<h2>Saving images for offline (iPhone)</h2>
+<p>Saved articles often point at images on the web. So that they read offline,
+the iPhone app downloads those images and stores them in the article. <strong>It
+does this in the background</strong> when the app starts and each time you return
+to it, for new articles in your Inbox, without you opening them. Each image comes
+from the site that hosts it. It is on by default; turn it off with "Save images
+for offline" in the library's ⋯ menu.</p>
+
+<h2>Things you set up</h2>
+<p>Several Mac features reach the network once you have set them up, and some
+of them then do so without asking each time. They go where you pointed them,
+or to the places named here:</p>
 <ul>
   <li><strong>MCP servers</strong> you have added and enabled start
       automatically when the app launches — you do not have to open anything.
-      A server that runs on your machine stays there; one you pointed at a URL
-      connects to it then. Where a server uses OAuth, the app refreshes its
-      token in the background, without asking again.</li>
-  <li><strong>Skill scripts</strong> run with network access. They are wrapped
-      in the operating system's sandbox for file access where that can be set
-      up — but the sandbox does not currently filter the network, and if it
-      cannot be built at all the script runs without it. A skill script is code
-      you chose to install and run; treat it as you would any script.</li>
-  <li><strong>Downloading a local model</strong> fetches it from Hugging Face.
-      Installing the Node-based agent bridge fetches Node from
-      <code>nodejs.org</code> and packages from the npm registry.</li>
-  <li><strong>Web search</strong>, if you enable it, lets the assistant query
-      DuckDuckGo. Once enabled it does not ask again per search.</li>
+      One you pointed at a URL connects to it then. A server that runs on your
+      machine does its work there, but servers from the built-in catalog are
+      started through <code>npx</code> or <code>uvx</code>, which can contact the
+      npm registry or PyPI while starting. Where a server uses OAuth, the app
+      refreshes its token in the background, without asking again.</li>
+  <li><strong>Skill scripts</strong> run with network access. That includes
+      some skills bundled with the app: the web-page downloader fetches the
+      page you give it and installs its packages from npm, and the diagram
+      renderer can fall back to fetching a renderer from npm. The app asks
+      before running a skill script. Scripts are wrapped in the operating
+      system's sandbox for file access where that can be set up — but the
+      sandbox does not currently filter the network, and if it cannot be built
+      at all the script runs without it. Treat a skill script as you would any
+      script.</li>
+  <li><strong>Local models.</strong> Downloading one fetches it from Hugging
+      Face. Opening the Local AI or Voice settings also asks Hugging Face for
+      details of the models listed there, and searching for a model searches
+      Hugging Face.</li>
+  <li><strong>Agents.</strong> Setting up the local agent downloads its
+      components from GitHub releases. Installing the Node-based agent bridge
+      fetches Node from <code>nodejs.org</code> and packages from the npm
+      registry. Opening Settings → AI checks installed agents for updates on
+      GitHub and npm, at most once an hour.</li>
 </ul>
 <p>The <code>.html</code> viewer does not block a document's external resources
 by default — opening a saved web page loads what that page references. You can
@@ -196,26 +223,40 @@ turn blocking on in Settings.</p>
 <h2>AI features (Mac only)</h2>
 <p>The Mac app can send text to an AI model. It goes to <strong>the provider
 you configured</strong>, under that provider's privacy policy and terms, using
-your own API key — there is no default provider, so until you set one up none of
-this happens at all.</p>
+your own API key or your own account with that provider — there is no default
+provider, so until you set one up none of this happens at all.</p>
 <p>Most of it happens only when you ask: a chat message, an editor action like
 Improve or Summarize, an agent run. <strong>Inline completions are the
-exception, and worth knowing about:</strong> if you have configured a connection
-for them, the app sends the text around your cursor about a third of a second
-after you stop typing, without you asking each time. Where that goes depends on
-the connection — a local model (Ollama, or the bundled one) keeps it on your
-machine; an API-key connection sends it to that provider. You can switch inline
-completions off in Settings.</p>
-<p>Scheduled automations are the other case where nobody is present: if you set
-one up with an AI step, it runs on its schedule and calls the provider
-then.</p>
+exception, and worth knowing about:</strong> once a connection is assigned to
+them, the app sends the text around your cursor about a third of a second after
+you stop typing, without you asking each time. The first connection you add
+that can do completions — GitHub Copilot, Ollama, the bundled local model, or an
+OpenAI-compatible endpoint — is assigned to them automatically, and they are on
+unless you switch them off. Where the text goes depends on the connection — a
+local model keeps it on your machine; any other sends it to that provider. You
+can switch inline completions off in Settings.</p>
+<p><strong>Web search is the other thing the assistant does on its own.</strong>
+In a chat, the assistant can query DuckDuckGo whenever it decides a search would
+help, without asking you each time. It is available whenever Tool Calling is on,
+which it is by default. Turn on "Require confirmation for every tool call" to be
+asked first, or turn Tool Calling off to remove it along with the assistant's
+other tools.</p>
+<p>Automations are the case where nobody is present: if you set one up with an
+AI step, it calls the provider when it is triggered — on a schedule, when a file
+changes (including one arriving through iCloud from another device), or when
+another event in the app fires.</p>
 <p>Depending on what you invoke, that can include the text you selected, the
 document you are working in, and material the assistant is given access to.
 Treat it as you would pasting the same text into that provider's own app.</p>
-<p>Providers are yours to choose and include Anthropic, OpenAI, Google, any
-OpenAI-compatible endpoint you point at, and any MCP servers you connect.
-Notesage can also run a model entirely on your machine — through Ollama or a
-bundled local model — in which case nothing leaves the device at all.</p>
+<p>Providers are yours to choose and include Anthropic, OpenAI, Google, GitHub
+Copilot, any OpenAI-compatible endpoint you point at, and any MCP servers you
+connect. Notesage can also run a model entirely on your machine — through Ollama
+or a bundled local model — in which case nothing leaves the device at all.</p>
+<p><strong>Agent programs from other vendors</strong> — Claude Code, Codex,
+Gemini CLI, Copilot CLI, Goose — can be installed and run from Notesage. Each
+is that vendor's own software, signed in with your account, and it talks to its
+vendor under that vendor's terms, which can include the vendor's own usage
+reporting. Notesage does not change those programs' reporting settings.</p>
 <p><strong>We never receive any of it.</strong> There is no Notesage server in
 this path; the app talks to your provider directly.</p>
 
@@ -250,7 +291,12 @@ a new "last updated" date.</p>
 could send anonymous usage and crash reports, off by default — that was removed
 from the code and the accounts with both providers were closed; and the account
 of what the apps do on the network was rewritten after auditing it against the
-code, which corrected three claims that were wrong.</p>
+code, which corrected three claims that were wrong. A second audit against the
+code, at the end of September, found more the policy had missed or got wrong:
+web search was described as something you switch on, when the assistant has it
+by default; inline completions are assigned automatically; the iPhone app saves
+images for offline in the background; and several Settings panes, agent programs
+and bundled skills contact services the policy did not name.</p>
 
 <h2>Your rights</h2>
 <p>Under the GDPR you have the right to ask us for access to personal data we
